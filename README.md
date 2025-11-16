@@ -38,7 +38,8 @@ A modern, high-performance e-commerce frontend built with Next.js 14, TypeScript
 | Styling | Tailwind CSS | Utility-first CSS framework |
 | State Management | Zustand | Lightweight state management |
 | Icons | Lucide React | Modern icon library |
-| CMS (Ready) | ButterCMS/Prismic/Sanity | Headless CMS integration |
+| **CMS** | **Strapi (Recommended)** | **Headless CMS - Full integration guide included** |
+| CMS (Alternatives) | ButterCMS/Prismic/Sanity | Other headless CMS options |
 | E-commerce (Ready) | Snipcart/Commerce.js | Cart & checkout integration |
 | Payments (Ready) | Stripe/PayPal | Payment processing |
 | Hosting | Vercel | Deployment platform |
@@ -76,6 +77,52 @@ npm run dev
 ```
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+## 🎯 Connect to Strapi CMS (Recommended)
+
+Strapi is an open-source headless CMS that's perfect for e-commerce. We've included a complete integration guide!
+
+### Quick Start with Strapi
+
+**Option 1: Automated Setup (Recommended)**
+
+```bash
+# Run the setup script
+./scripts/setup-strapi.sh
+```
+
+**Option 2: Manual Setup**
+
+```bash
+# In a separate terminal/directory
+cd ..
+npx create-strapi-app@latest veloce-moto-backend --quickstart
+
+# Start Strapi
+cd veloce-moto-backend
+npm run develop
+```
+
+### Complete Integration Guide
+
+Follow the comprehensive **[STRAPI_INTEGRATION_GUIDE.md](./STRAPI_INTEGRATION_GUIDE.md)** which covers:
+
+1. ✅ Setting up Strapi backend
+2. ✅ Creating Product and Category content types
+3. ✅ Configuring permissions
+4. ✅ Connecting frontend to Strapi
+5. ✅ Adding sample data
+6. ✅ Deployment guide
+
+**Key Benefits:**
+- Free and open-source
+- Self-hosted (full control)
+- Easy-to-use admin panel
+- Built-in media library
+- REST & GraphQL APIs
+- No vendor lock-in
+
+The frontend is **already configured** with Strapi utilities in `lib/strapi/api.ts`!
 
 ## Project Structure
 
