@@ -34,17 +34,17 @@ export default function ProductCard({ product }: ProductCardProps) {
           {/* Badges */}
           <div className="absolute top-2 left-2 flex flex-col gap-2">
             {product.isNew && (
-              <span className="px-2 py-1 bg-primary-600 text-white text-xs font-bold rounded">
+              <span className="px-2 py-1 bg-primary-900 text-white text-xs font-bold rounded">
                 NEW
               </span>
             )}
             {hasDiscount && (
-              <span className="px-2 py-1 bg-accent-600 text-white text-xs font-bold rounded">
+              <span className="px-2 py-1 bg-accent-500 text-black text-xs font-bold rounded">
                 SALE
               </span>
             )}
             {product.isBestSeller && (
-              <span className="px-2 py-1 bg-yellow-500 text-white text-xs font-bold rounded">
+              <span className="px-2 py-1 bg-accent-600 text-white text-xs font-bold rounded">
                 BEST SELLER
               </span>
             )}
@@ -122,7 +122,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             <button
               onClick={handleAddToCart}
               disabled={!product.inStock}
-              className="p-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+              className="p-2 bg-primary-900 text-white rounded-lg hover:bg-black disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
               title="Add to cart"
             >
               <ShoppingCart className="w-5 h-5" />

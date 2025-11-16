@@ -10,7 +10,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-gray-900 to-gray-800 text-white">
+      <section className="relative bg-gradient-to-br from-primary-950 via-primary-900 to-black text-white">
         <div className="container mx-auto px-4 py-20 lg:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -24,13 +24,13 @@ export default function HomePage() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   href="/products"
-                  className="px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-lg transition flex items-center justify-center gap-2"
+                  className="px-8 py-4 bg-accent-500 hover:bg-accent-600 text-black font-bold rounded-lg transition flex items-center justify-center gap-2"
                 >
                   Shop Now <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link
                   href="/deals"
-                  className="px-8 py-4 bg-white hover:bg-gray-100 text-gray-900 font-bold rounded-lg transition flex items-center justify-center"
+                  className="px-8 py-4 bg-white hover:bg-gray-100 text-black font-bold rounded-lg transition flex items-center justify-center"
                 >
                   View Deals
                 </Link>
@@ -50,43 +50,43 @@ export default function HomePage() {
       </section>
 
       {/* Features */}
-      <section className="py-12 bg-gray-50 border-y border-gray-200">
+      <section className="py-12 bg-primary-950 border-y border-primary-900">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-primary-100 rounded-lg">
-                <Truck className="w-6 h-6 text-primary-600" />
+              <div className="p-3 bg-accent-500/10 rounded-lg">
+                <Truck className="w-6 h-6 text-accent-500" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 mb-1">Free Shipping</h3>
-                <p className="text-sm text-gray-600">On orders over $100</p>
+                <h3 className="font-bold text-white mb-1">Free Shipping</h3>
+                <p className="text-sm text-gray-400">On orders over $100</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-primary-100 rounded-lg">
-                <Shield className="w-6 h-6 text-primary-600" />
+              <div className="p-3 bg-accent-500/10 rounded-lg">
+                <Shield className="w-6 h-6 text-accent-500" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 mb-1">Quality Guaranteed</h3>
-                <p className="text-sm text-gray-600">Premium parts only</p>
+                <h3 className="font-bold text-white mb-1">Quality Guaranteed</h3>
+                <p className="text-sm text-gray-400">Premium parts only</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-primary-100 rounded-lg">
-                <Headphones className="w-6 h-6 text-primary-600" />
+              <div className="p-3 bg-accent-500/10 rounded-lg">
+                <Headphones className="w-6 h-6 text-accent-500" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 mb-1">Expert Support</h3>
-                <p className="text-sm text-gray-600">24/7 customer service</p>
+                <h3 className="font-bold text-white mb-1">Expert Support</h3>
+                <p className="text-sm text-gray-400">24/7 customer service</p>
               </div>
             </div>
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-primary-100 rounded-lg">
-                <CreditCard className="w-6 h-6 text-primary-600" />
+              <div className="p-3 bg-accent-500/10 rounded-lg">
+                <CreditCard className="w-6 h-6 text-accent-500" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 mb-1">Secure Payment</h3>
-                <p className="text-sm text-gray-600">Safe & encrypted</p>
+                <h3 className="font-bold text-white mb-1">Secure Payment</h3>
+                <p className="text-sm text-gray-400">Safe & encrypted</p>
               </div>
             </div>
           </div>
@@ -134,7 +134,7 @@ export default function HomePage() {
       </section>
 
       {/* Featured Products */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between mb-12">
             <div>
@@ -147,7 +147,7 @@ export default function HomePage() {
             </div>
             <Link
               href="/products"
-              className="hidden md:flex items-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition"
+              className="hidden md:flex items-center gap-2 px-6 py-3 bg-primary-900 hover:bg-black text-white font-semibold rounded-lg transition"
             >
               View All <ArrowRight className="w-5 h-5" />
             </Link>
@@ -162,7 +162,7 @@ export default function HomePage() {
           <div className="mt-8 text-center md:hidden">
             <Link
               href="/products"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary-900 hover:bg-black text-white font-semibold rounded-lg transition"
             >
               View All Products <ArrowRight className="w-5 h-5" />
             </Link>
@@ -171,17 +171,17 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-primary-600 text-white">
+      <section className="py-16 bg-gradient-to-r from-primary-950 to-black text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold mb-4">
             Ready to Upgrade Your Ride?
           </h2>
-          <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
             Browse our extensive catalog of premium automotive parts and accessories
           </p>
           <Link
             href="/products"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-white hover:bg-gray-100 text-primary-600 font-bold rounded-lg transition"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-accent-500 hover:bg-accent-600 text-black font-bold rounded-lg transition"
           >
             Start Shopping <ArrowRight className="w-5 h-5" />
           </Link>

@@ -12,16 +12,16 @@ export default function Header() {
   const itemCount = useCartStore((state) => state.getItemCount())
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-md">
+    <header className="sticky top-0 z-50 bg-white shadow-lg border-b border-gray-200">
       {/* Top Bar */}
-      <div className="bg-gray-900 text-white py-2">
+      <div className="bg-primary-950 text-white py-2">
         <div className="container mx-auto px-4 flex justify-between items-center text-sm">
           <p>Free shipping on orders over $100</p>
           <div className="flex gap-4">
-            <Link href="/contact" className="hover:text-primary-400 transition">
+            <Link href="/contact" className="hover:text-accent-400 transition">
               Contact
             </Link>
-            <Link href="/about" className="hover:text-primary-400 transition">
+            <Link href="/about" className="hover:text-accent-400 transition">
               About
             </Link>
           </div>
@@ -49,7 +49,7 @@ export default function Header() {
               <input
                 type="text"
                 placeholder="Search for parts, brands, or categories..."
-                className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-900 focus:border-transparent"
               />
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             </div>
@@ -88,7 +88,7 @@ export default function Header() {
             <input
               type="text"
               placeholder="Search for parts..."
-              className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-900 focus:border-transparent"
             />
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
           </div>
@@ -96,13 +96,13 @@ export default function Header() {
       </div>
 
       {/* Navigation - Desktop */}
-      <nav className="hidden md:block bg-gray-50 border-t border-gray-200">
+      <nav className="hidden md:block bg-gray-100 border-t border-gray-200">
         <div className="container mx-auto px-4">
           <ul className="flex items-center justify-center gap-8 py-3">
             <li>
               <Link
                 href="/products"
-                className="text-gray-700 hover:text-primary-600 font-medium transition"
+                className="text-gray-700 hover:text-black font-medium transition"
               >
                 All Products
               </Link>
@@ -111,7 +111,7 @@ export default function Header() {
               <li key={category.id}>
                 <Link
                   href={`/category/${category.slug}`}
-                  className="text-gray-700 hover:text-primary-600 font-medium transition"
+                  className="text-gray-700 hover:text-black font-medium transition"
                 >
                   {category.name}
                 </Link>
