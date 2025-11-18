@@ -3,6 +3,7 @@ import type { Product, Category } from '@/types'
 
 const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'
 const API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL || 'http://localhost:1337/api'
+const API_TOKEN = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN || ''
 
 // Helper function to get image URL
 export function getStrapiURL(path: string = '') {
@@ -16,15 +17,26 @@ export function getStrapiMedia(url: string | null | undefined) {
 }
 
 // Fetch data from Strapi
-async function fetchAPI(path: string, params = {}, options = {}) {
+async function fetchAPI(path: string, params = {}, options: RequestInit = {}) {
   const queryString = qs.stringify(params, {
     encodeValuesOnly: true,
   })
 
   const url = `${API_URL}${path}${queryString ? `?${queryString}` : ''}`
 
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+    ...(options.headers || {}),
+  }
+
+  // Add Authorization header if API token is available
+  if (API_TOKEN) {
+    headers['Authorization'] = `Bearer ${API_TOKEN}`
+  }
+
   const response = await fetch(url, {
     ...options,
+    headers,
     cache: 'no-store', // Disable cache for development
   })
 
