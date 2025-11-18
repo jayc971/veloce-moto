@@ -1,27 +1,65 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ShoppingCart, Star, Check, Truck, Shield, ArrowLeft } from 'lucide-react'
-import { products } from '@/lib/mockData'
+import { ShoppingCart, Star, Check, Truck, Shield, ArrowLeft, MessageCircle } from 'lucide-react'
+import { getProductBySlug, getProductsByCategory } from '@/lib/strapi/api'
+import type { Product } from '@/types'
 import { useCartStore } from '@/lib/store/cartStore'
 import ProductCard from '@/components/ProductCard'
+import { formatPriceSimple } from '@/lib/utils/currency'
+import { orderProductViaWhatsApp } from '@/lib/utils/whatsapp'
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
-  const product = products.find((p) => p.slug === params.slug)
+  const [product, setProduct] = useState<Product | null>(null)
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
   const [quantity, setQuantity] = useState(1)
   const [selectedImage, setSelectedImage] = useState(0)
+  const [loading, setLoading] = useState(true)
   const addItem = useCartStore((state) => state.addItem)
 
-  if (!product) {
-    notFound()
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        const productData = await getProductBySlug(params.slug)
 
-  const relatedProducts = products
-    .filter((p) => p.category.id === product.category.id && p.id !== product.id)
-    .slice(0, 4)
+        if (!productData) {
+          notFound()
+        }
+
+        setProduct(productData)
+
+        if (productData.category) {
+          const categoryProducts = await getProductsByCategory(productData.category.slug)
+          setRelatedProducts(
+            categoryProducts
+              .filter((p) => p.id !== productData.id)
+              .slice(0, 4)
+          )
+        }
+      } catch (error) {
+        console.error('Error fetching product:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [params.slug])
+
+  if (loading || !product) {
+    return (
+      <div className="min-h-screen faded-gradient-bg flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-500 mx-auto mb-4"></div>
+          <p className="text-gray-300">Loading product...</p>
+        </div>
+      </div>
+    )
+  }
 
   const displayPrice = product.salePrice || product.price
   const hasDiscount = product.salePrice && product.salePrice < product.price
@@ -31,55 +69,60 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
     alert('Product added to cart!')
   }
 
+  const handleWhatsAppOrder = () => {
+    orderProductViaWhatsApp(product, quantity)
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen faded-gradient-bg">
       <div className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-gray-600 mb-6">
-          <Link href="/" className="hover:text-primary-600">
+        <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
+          <Link href="/" className="hover:text-accent-500 transition">
             Home
           </Link>
           <span>/</span>
-          <Link href="/products" className="hover:text-primary-600">
+          <Link href="/products" className="hover:text-accent-500 transition">
             Products
           </Link>
           <span>/</span>
           <Link
             href={`/category/${product.category.slug}`}
-            className="hover:text-primary-600"
+            className="hover:text-accent-500 transition"
           >
             {product.category.name}
           </Link>
           <span>/</span>
-          <span className="text-gray-900">{product.name}</span>
+          <span className="text-white">{product.name}</span>
         </div>
 
         {/* Back Button */}
         <Link
           href="/products"
-          className="inline-flex items-center gap-2 text-primary-600 hover:text-primary-700 mb-6"
+          className="inline-flex items-center gap-2 text-accent-500 hover:text-accent-400 mb-6 transition"
         >
           <ArrowLeft className="w-5 h-5" />
           Back to Products
         </Link>
 
         {/* Product Details */}
-        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-12">
+        <div className="bg-primary-900 rounded-lg shadow-lg overflow-hidden mb-12">
           <div className="grid lg:grid-cols-2 gap-8 p-6 lg:p-8">
             {/* Images */}
             <div>
-              <div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden mb-4">
+              <div className="relative aspect-square bg-white rounded-lg overflow-hidden mb-4 shadow-lg">
                 <Image
                   src={product.images[selectedImage].url}
                   alt={product.images[selectedImage].alt}
                   fill
-                  className="object-cover"
+                  className="object-contain p-4"
+                  priority
                 />
 
                 {/* Badges */}
                 <div className="absolute top-4 left-4 flex flex-col gap-2">
                   {product.isNew && (
-                    <span className="px-3 py-1 bg-primary-600 text-white text-sm font-bold rounded">
+                    <span className="px-3 py-1 bg-primary-900 text-white text-sm font-bold rounded">
                       NEW
                     </span>
                   )}
@@ -89,31 +132,38 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                     </span>
                   )}
                   {product.isBestSeller && (
-                    <span className="px-3 py-1 bg-yellow-500 text-white text-sm font-bold rounded">
+                    <span className="px-3 py-1 bg-accent-600 text-white text-sm font-bold rounded">
                       BEST SELLER
                     </span>
                   )}
                 </div>
+
+                {/* Image Counter */}
+                {product.images.length > 1 && (
+                  <div className="absolute bottom-4 right-4 bg-black/70 text-white px-3 py-1 rounded text-sm">
+                    {selectedImage + 1} / {product.images.length}
+                  </div>
+                )}
               </div>
 
               {/* Thumbnail Images */}
               {product.images.length > 1 && (
-                <div className="grid grid-cols-4 gap-4">
+                <div className="flex gap-3 overflow-x-auto pb-2">
                   {product.images.map((image, index) => (
                     <button
                       key={image.id}
                       onClick={() => setSelectedImage(index)}
-                      className={`relative aspect-square bg-gray-100 rounded-lg overflow-hidden border-2 transition ${
+                      className={`relative flex-shrink-0 w-20 h-20 bg-white rounded-lg overflow-hidden border-3 transition-all shadow-md hover:shadow-lg ${
                         selectedImage === index
-                          ? 'border-primary-600'
-                          : 'border-transparent hover:border-gray-300'
+                          ? 'border-accent-500 ring-2 ring-accent-500 ring-offset-2 ring-offset-primary-900'
+                          : 'border-gray-300 hover:border-accent-400 opacity-70 hover:opacity-100'
                       }`}
                     >
                       <Image
                         src={image.url}
                         alt={image.alt}
                         fill
-                        className="object-cover"
+                        className="object-contain p-1"
                       />
                     </button>
                   ))}
@@ -126,19 +176,19 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
               <div className="mb-4">
                 <Link
                   href={`/category/${product.category.slug}`}
-                  className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                  className="text-sm text-accent-500 hover:text-accent-400 font-medium transition"
                 >
                   {product.category.name}
                 </Link>
               </div>
 
-              <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              <h1 className="text-3xl lg:text-4xl font-bold text-white mb-4">
                 {product.name}
               </h1>
 
               {/* Brand */}
-              <p className="text-lg text-gray-600 mb-4">
-                Brand: <span className="font-semibold">{product.brand}</span>
+              <p className="text-lg text-gray-300 mb-4">
+                Brand: <span className="font-semibold text-white">{product.brand}</span>
               </p>
 
               {/* Rating */}
@@ -151,12 +201,12 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                         className={`w-5 h-5 ${
                           i < Math.floor(product.rating!)
                             ? 'fill-yellow-400 text-yellow-400'
-                            : 'text-gray-300'
+                            : 'text-gray-600'
                         }`}
                       />
                     ))}
                   </div>
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-400">
                     {product.rating} ({product.reviewCount} reviews)
                   </span>
                 </div>
@@ -165,18 +215,18 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
               {/* Price */}
               <div className="mb-6">
                 <div className="flex items-baseline gap-3 mb-2">
-                  <span className="text-4xl font-bold text-gray-900">
-                    ${displayPrice.toFixed(2)}
+                  <span className="text-4xl font-bold text-white">
+                    {formatPriceSimple(displayPrice)}
                   </span>
                   {hasDiscount && (
                     <span className="text-2xl text-gray-500 line-through">
-                      ${product.price.toFixed(2)}
+                      {formatPriceSimple(product.price)}
                     </span>
                   )}
                 </div>
                 {hasDiscount && (
-                  <span className="text-lg text-accent-600 font-semibold">
-                    Save ${(product.price - product.salePrice!).toFixed(2)} (
+                  <span className="text-lg text-accent-500 font-semibold">
+                    Save {formatPriceSimple(product.price - product.salePrice!)} (
                     {Math.round(
                       ((product.price - product.salePrice!) / product.price) * 100
                     )}
@@ -186,45 +236,55 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
               </div>
 
               {/* Description */}
-              <p className="text-gray-700 mb-6 leading-relaxed">
+              <p className="text-gray-300 mb-6 leading-relaxed">
                 {product.description}
               </p>
 
               {/* Stock Status */}
               <div className="mb-6">
                 {product.inStock ? (
-                  <div className="flex items-center gap-2 text-green-600">
+                  <div className="flex items-center gap-2 text-green-500">
                     <Check className="w-5 h-5" />
                     <span className="font-semibold">In Stock</span>
                     {product.stockQuantity && (
-                      <span className="text-gray-600">
+                      <span className="text-gray-400">
                         ({product.stockQuantity} available)
                       </span>
                     )}
                   </div>
                 ) : (
-                  <div className="flex items-center gap-2 text-red-600">
+                  <div className="flex items-center gap-2 text-red-500">
                     <span className="font-semibold">Out of Stock</span>
                   </div>
                 )}
               </div>
 
               {/* SKU */}
-              <p className="text-sm text-gray-600 mb-6">SKU: {product.sku}</p>
+              <p className="text-sm text-gray-400 mb-6">SKU: {product.sku}</p>
+
+              {/* WhatsApp Order Button */}
+              <button
+                onClick={handleWhatsAppOrder}
+                disabled={!product.inStock}
+                className="w-full px-8 py-4 bg-green-600 hover:bg-green-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-bold rounded-lg transition flex items-center justify-center gap-2 mb-4"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Order via WhatsApp
+              </button>
 
               {/* Quantity & Add to Cart */}
               <div className="flex gap-4 mb-8">
-                <div className="flex items-center border border-gray-300 rounded-lg">
+                <div className="flex items-center border border-primary-700 rounded-lg bg-primary-800">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-4 py-3 hover:bg-gray-50 transition"
+                    className="px-4 py-3 text-white hover:bg-primary-700 transition"
                   >
                     -
                   </button>
-                  <span className="px-6 py-3 font-semibold">{quantity}</span>
+                  <span className="px-6 py-3 font-semibold text-white">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="px-4 py-3 hover:bg-gray-50 transition"
+                    className="px-4 py-3 text-white hover:bg-primary-700 transition"
                   >
                     +
                   </button>
@@ -233,7 +293,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                 <button
                   onClick={handleAddToCart}
                   disabled={!product.inStock}
-                  className="flex-1 px-8 py-3 bg-primary-600 hover:bg-primary-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-bold rounded-lg transition flex items-center justify-center gap-2"
+                  className="flex-1 px-8 py-3 bg-accent-600 hover:bg-accent-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-bold rounded-lg transition flex items-center justify-center gap-2"
                 >
                   <ShoppingCart className="w-5 h-5" />
                   Add to Cart
@@ -241,29 +301,29 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
               </div>
 
               {/* Features */}
-              <div className="grid grid-cols-2 gap-4 mb-8 p-4 bg-gray-50 rounded-lg">
+              <div className="grid grid-cols-2 gap-4 mb-8 p-4 bg-primary-800 rounded-lg">
                 <div className="flex items-center gap-2">
-                  <Truck className="w-5 h-5 text-primary-600" />
-                  <span className="text-sm">Free shipping over $100</span>
+                  <Truck className="w-5 h-5 text-accent-500" />
+                  <span className="text-sm text-gray-300">Island-wide delivery</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-primary-600" />
-                  <span className="text-sm">Quality guaranteed</span>
+                  <Shield className="w-5 h-5 text-accent-500" />
+                  <span className="text-sm text-gray-300">Genuine parts</span>
                 </div>
               </div>
 
               {/* Specifications */}
               {product.specifications && product.specifications.length > 0 && (
                 <div>
-                  <h3 className="font-bold text-gray-900 mb-4">Specifications</h3>
+                  <h3 className="font-bold text-white mb-4">Specifications</h3>
                   <div className="space-y-2">
                     {product.specifications.map((spec, index) => (
                       <div
                         key={index}
-                        className="flex justify-between py-2 border-b border-gray-200"
+                        className="flex justify-between py-2 border-b border-primary-800"
                       >
-                        <span className="text-gray-600">{spec.name}</span>
-                        <span className="font-semibold">
+                        <span className="text-gray-400">{spec.name}</span>
+                        <span className="font-semibold text-white">
                           {spec.value} {spec.unit || ''}
                         </span>
                       </div>
@@ -278,7 +338,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         {/* Related Products */}
         {relatedProducts.length > 0 && (
           <div>
-            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6">
               Related Products
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

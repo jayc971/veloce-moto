@@ -2,14 +2,41 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import { Teko, Orbitron, Inter } from 'next/font/google'
+
+const teko = Teko({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-teko'
+})
+
+const orbitron = Orbitron({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800', '900'],
+  variable: '--font-orbitron'
+})
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-inter'
+})
 
 export const metadata: Metadata = {
-  title: 'Veloce Moto - Premium Automotive Parts & Accessories',
-  description: 'Your trusted source for high-quality motor vehicle parts and accessories. Fast shipping, expert support, and competitive prices.',
-  keywords: ['automotive parts', 'car parts', 'motorcycle parts', 'auto accessories', 'vehicle parts'],
+  title: 'Veloce Moto - Premium Motorcycle Parts & Accessories',
+  description: 'Your trusted source for genuine motorcycle parts and accessories in Sri Lanka. Island-wide delivery, expert support and competitive prices.',
+  keywords: ['motorcycle parts', 'bike parts', 'motorcycle accessories', 'motorbike parts', 'Sri Lanka motorcycle parts', 'genuine parts'],
+  icons: {
+    icon: [
+      { url: 'https://i.ibb.co/Ps3HFYh4/veloce-moto-logo.png', sizes: '192x192', type: 'image/png' },
+    ],
+    apple: [
+      { url: 'https://i.ibb.co/Ps3HFYh4/veloce-moto-logo.png', sizes: '192x192', type: 'image/png' },
+    ],
+  },
   openGraph: {
-    title: 'Veloce Moto - Premium Automotive Parts & Accessories',
-    description: 'Your trusted source for high-quality motor vehicle parts and accessories.',
+    title: 'Veloce Moto - Premium Motorcycle Parts & Accessories',
+    description: 'Your trusted source for genuine motorcycle parts and accessories in Sri Lanka. Island-wide delivery.',
     url: 'https://velocemoto.com',
     siteName: 'Veloce Moto',
     images: [
@@ -20,13 +47,13 @@ export const metadata: Metadata = {
         alt: 'Veloce Moto Logo',
       },
     ],
-    locale: 'en_US',
+    locale: 'en_LK',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Veloce Moto - Premium Automotive Parts & Accessories',
-    description: 'Your trusted source for high-quality motor vehicle parts and accessories.',
+    title: 'Veloce Moto - Premium Motorcycle Parts & Accessories',
+    description: 'Your trusted source for genuine motorcycle parts and accessories in Sri Lanka.',
     images: ['https://i.ibb.co/Ps3HFYh4/veloce-moto-logo.png'],
   },
   robots: {
@@ -49,9 +76,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="font-sans antialiased">
+      <body className={`font-sans antialiased bg-gray-100 ${teko.variable} ${orbitron.variable} ${inter.variable}`}>
         <Header />
-        <main className="min-h-screen">
+        <main className="min-h-screen bg-gray-100">
           {children}
         </main>
         <Footer />

@@ -2,68 +2,133 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { ShoppingCart, Search, Menu, X } from 'lucide-react'
-import { useState } from 'react'
+import { ShoppingCart, Menu, X, ChevronDown } from 'lucide-react'
+import { useState, useEffect } from 'react'
 import { useCartStore } from '@/lib/store/cartStore'
-import { categories } from '@/lib/mockData'
+import { getAllCategories } from '@/lib/strapi/api'
+import type { Category } from '@/types'
+import logo from '@/app/assets/logo.png'
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [moreDropdownOpen, setMoreDropdownOpen] = useState(false)
+  const [categories, setCategories] = useState<Category[]>([])
+  const [isScrolled, setIsScrolled] = useState(false)
   const itemCount = useCartStore((state) => state.getItemCount())
 
-  return (
-    <header className="sticky top-0 z-50 bg-white shadow-lg border-b border-gray-200">
-      {/* Top Bar */}
-      <div className="bg-primary-950 text-white py-2">
-        <div className="container mx-auto px-4 flex justify-between items-center text-sm">
-          <p>Free shipping on orders over $100</p>
-          <div className="flex gap-4">
-            <Link href="/contact" className="hover:text-accent-400 transition">
-              Contact
-            </Link>
-            <Link href="/about" className="hover:text-accent-400 transition">
-              About
-            </Link>
-          </div>
-        </div>
-      </div>
+  const MAX_VISIBLE_CATEGORIES = 6
 
-      {/* Main Header */}
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between gap-4">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="https://i.ibb.co/Ps3HFYh4/veloce-moto-logo.png"
-              alt="Veloce Moto Logo"
-              width={180}
-              height={60}
-              className="h-12 w-auto"
-              priority
-            />
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categoriesData = await getAllCategories()
+        setCategories(categoriesData)
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+      }
+    }
+
+    fetchCategories()
+  }, [])
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true)
+      } else {
+        setIsScrolled(false)
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  return (
+    <header className={`sticky top-0 z-50 bg-primary-900 shadow-lg border-b border-primary-800 transition-all duration-300 ${
+      isScrolled ? 'shadow-xl' : ''
+    }`}>
+      {/* Main Header - Single Line */}
+      <div className={`container mx-auto px-4 transition-all duration-300 ${
+        isScrolled ? 'py-2' : 'py-4'
+      }`}>
+        <div className="flex items-center gap-8">
+          {/* Logo - Animated */}
+          <Link href="/" className={`flex items-center gap-2 flex-shrink-0 relative z-10 transition-all duration-300 ${
+            isScrolled ? '-my-4' : '-my-8'
+          }`}>
+            <div className="logo-speed-animation">
+              <Image
+                src={logo}
+                alt="Veloce Moto Logo"
+                width={isScrolled ? 180 : 240}
+                height={isScrolled ? 80 : 107}
+                className={`w-auto transition-all duration-300 logo-glow-animation ${
+                  isScrolled ? 'h-16' : 'h-24'
+                }`}
+                priority
+              />
+            </div>
           </Link>
 
-          {/* Search Bar - Desktop */}
-          <div className="hidden md:flex flex-1 max-w-2xl mx-8">
-            <div className="relative w-full">
-              <input
-                type="text"
-                placeholder="Search for parts, brands, or categories..."
-                className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-900 focus:border-transparent"
-              />
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-            </div>
-          </div>
+          {/* Navigation - Desktop (Centered) */}
+          <nav className="hidden lg:flex items-center justify-center gap-6 flex-1">
+            <Link
+              href="/products"
+              className="text-gray-300 hover:text-accent-500 font-medium transition whitespace-nowrap"
+            >
+              All Products
+            </Link>
+            {categories.slice(0, MAX_VISIBLE_CATEGORIES).map((category) => (
+              <Link
+                key={category.id}
+                href={`/category/${category.slug}`}
+                className="text-gray-300 hover:text-accent-500 font-medium transition whitespace-nowrap"
+              >
+                {category.name}
+              </Link>
+            ))}
+            {categories.length > MAX_VISIBLE_CATEGORIES && (
+              <div
+                className="relative"
+                onMouseEnter={() => setMoreDropdownOpen(true)}
+                onMouseLeave={() => setMoreDropdownOpen(false)}
+              >
+                <button
+                  className="flex items-center gap-1 text-gray-300 hover:text-accent-500 font-medium transition whitespace-nowrap"
+                >
+                  More
+                  <ChevronDown className={`w-4 h-4 transition-transform ${moreDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {moreDropdownOpen && (
+                  <div className="absolute top-full right-0 pt-2 z-50">
+                    <div className="w-56 bg-primary-800 rounded-lg shadow-xl border border-primary-700 py-2">
+                      {categories.slice(MAX_VISIBLE_CATEGORIES).map((category) => (
+                        <Link
+                          key={category.id}
+                          href={`/category/${category.slug}`}
+                          className="block px-4 py-2 text-gray-300 hover:bg-black hover:text-accent-500 transition"
+                          onClick={() => setMoreDropdownOpen(false)}
+                        >
+                          {category.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </nav>
 
           {/* Cart & Mobile Menu */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 flex-shrink-0 ml-auto lg:ml-0">
             <Link
               href="/cart"
-              className="relative p-2 hover:bg-gray-100 rounded-lg transition"
+              className="relative p-2 hover:bg-primary-800 rounded-lg transition text-gray-300"
             >
               <ShoppingCart className="w-6 h-6" />
               {itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-accent-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-accent-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                   {itemCount}
                 </span>
               )}
@@ -71,7 +136,7 @@ export default function Header() {
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition"
+              className="lg:hidden p-2 hover:bg-primary-800 rounded-lg transition text-gray-300"
             >
               {mobileMenuOpen ? (
                 <X className="w-6 h-6" />
@@ -81,62 +146,16 @@ export default function Header() {
             </button>
           </div>
         </div>
-
-        {/* Search Bar - Mobile */}
-        <div className="md:hidden mt-4">
-          <div className="relative w-full">
-            <input
-              type="text"
-              placeholder="Search for parts..."
-              className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-900 focus:border-transparent"
-            />
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-          </div>
-        </div>
       </div>
-
-      {/* Navigation - Desktop */}
-      <nav className="hidden md:block bg-gray-100 border-t border-gray-200">
-        <div className="container mx-auto px-4">
-          <ul className="flex items-center justify-center gap-8 py-3">
-            <li>
-              <Link
-                href="/products"
-                className="text-gray-700 hover:text-black font-medium transition"
-              >
-                All Products
-              </Link>
-            </li>
-            {categories.slice(0, 5).map((category) => (
-              <li key={category.id}>
-                <Link
-                  href={`/category/${category.slug}`}
-                  className="text-gray-700 hover:text-black font-medium transition"
-                >
-                  {category.name}
-                </Link>
-              </li>
-            ))}
-            <li>
-              <Link
-                href="/deals"
-                className="text-accent-600 hover:text-accent-700 font-bold transition"
-              >
-                Deals
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <nav className="md:hidden bg-white border-t border-gray-200">
+        <nav className="lg:hidden bg-primary-900 border-t border-primary-800">
           <ul className="py-4">
             <li>
               <Link
                 href="/products"
-                className="block px-4 py-3 hover:bg-gray-50 transition"
+                className="block px-4 py-3 text-gray-300 hover:bg-primary-800 hover:text-accent-500 transition"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 All Products
@@ -146,22 +165,13 @@ export default function Header() {
               <li key={category.id}>
                 <Link
                   href={`/category/${category.slug}`}
-                  className="block px-4 py-3 hover:bg-gray-50 transition"
+                  className="block px-4 py-3 text-gray-300 hover:bg-primary-800 hover:text-accent-500 transition"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {category.name}
                 </Link>
               </li>
             ))}
-            <li>
-              <Link
-                href="/deals"
-                className="block px-4 py-3 text-accent-600 font-bold hover:bg-gray-50 transition"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Deals
-              </Link>
-            </li>
           </ul>
         </nav>
       )}
