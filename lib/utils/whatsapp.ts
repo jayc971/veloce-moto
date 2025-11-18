@@ -1,5 +1,4 @@
-import type { Product } from '@/types'
-import type { CartItem } from '@/lib/store/cartStore'
+import type { Product, CartItem } from '@/types'
 import { formatPriceSimple } from './currency'
 
 const SHOP_WHATSAPP_NUMBER = '94741813772' // Without the + sign for WhatsApp API
