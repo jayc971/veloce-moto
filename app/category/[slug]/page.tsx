@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import ProductCard from '@/components/ProductCard'
@@ -8,7 +8,8 @@ import { getCategoryBySlug, getProductsByCategory } from '@/lib/strapi/api'
 import type { Product, Category } from '@/types'
 import { ArrowLeft } from 'lucide-react'
 
-export default function CategoryPage({ params }: { params: { slug: string } }) {
+export default function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params)
   const [category, setCategory] = useState<Category | null>(null)
   const [categoryProducts, setCategoryProducts] = useState<Product[]>([])
   const [sortBy, setSortBy] = useState('featured')
@@ -19,8 +20,8 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
       setLoading(true)
       try {
         const [categoryData, productsData] = await Promise.all([
-          getCategoryBySlug(params.slug),
-          getProductsByCategory(params.slug),
+          getCategoryBySlug(slug),
+          getProductsByCategory(slug),
         ])
 
         if (!categoryData) {
@@ -37,7 +38,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
     }
 
     fetchData()
-  }, [params.slug])
+  }, [slug])
 
   const sortedProducts = [...categoryProducts].sort((a, b) => {
     switch (sortBy) {
