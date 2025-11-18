@@ -24,9 +24,8 @@ async function fetchAPI(path: string, params = {}, options: RequestInit = {}) {
 
   const url = `${API_URL}${path}${queryString ? `?${queryString}` : ''}`
 
-  const headers: HeadersInit = {
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...(options.headers || {}),
   }
 
   // Add Authorization header if API token is available
