@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, use } from 'react'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -12,7 +12,8 @@ import ProductCard from '@/components/ProductCard'
 import { formatPriceSimple } from '@/lib/utils/currency'
 import { orderProductViaWhatsApp } from '@/lib/utils/whatsapp'
 
-export default function ProductPage({ params }: { params: { slug: string } }) {
+export default function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params)
   const [product, setProduct] = useState<Product | null>(null)
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
   const [quantity, setQuantity] = useState(1)
@@ -24,7 +25,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
     const fetchData = async () => {
       setLoading(true)
       try {
-        const productData = await getProductBySlug(params.slug)
+        const productData = await getProductBySlug(slug)
 
         if (!productData) {
           notFound()
@@ -48,7 +49,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
     }
 
     fetchData()
-  }, [params.slug])
+  }, [slug])
 
   if (loading || !product) {
     return (
