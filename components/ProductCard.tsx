@@ -1,8 +1,12 @@
+'use client'
+
 import Link from 'next/link'
 import Image from 'next/image'
-import { ShoppingCart, Star } from 'lucide-react'
+import { ShoppingCart, Star, MessageCircle, Plus } from 'lucide-react'
 import type { Product } from '@/types'
 import { useCartStore } from '@/lib/store/cartStore'
+import { formatPriceSimple } from '@/lib/utils/currency'
+import { orderProductViaWhatsApp } from '@/lib/utils/whatsapp'
 
 interface ProductCardProps {
   product: Product
@@ -16,31 +20,42 @@ export default function ProductCard({ product }: ProductCardProps) {
     addItem(product)
   }
 
+  const handleWhatsAppOrder = (e: React.MouseEvent) => {
+    e.preventDefault()
+    orderProductViaWhatsApp(product, 1)
+  }
+
   const displayPrice = product.salePrice || product.price
   const hasDiscount = product.salePrice && product.salePrice < product.price
+  const primaryImage = product.images?.[0]
 
   return (
-    <Link href={`/product/${product.slug}`} className="group">
-      <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+    <Link href={`/product/${product.slug}`} className="group h-full flex">
+      <div className="rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden transform hover:-translate-y-2 flex flex-col w-full">
         {/* Image Container */}
-        <div className="relative aspect-square bg-gray-100 overflow-hidden">
-          <Image
-            src={product.images[0].url}
-            alt={product.images[0].alt}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-          />
+        <div className="overflow-hidden relative">
+          <div className="relative aspect-square bg-white">
+            {primaryImage ? (
+              <Image
+                src={primaryImage.url}
+                alt={primaryImage.alt}
+                fill
+                className="object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                <span className="text-6xl font-bold text-gray-400">
+                  {product.name.charAt(0).toUpperCase()}
+                </span>
+              </div>
+            )}
+          </div>
 
           {/* Badges */}
-          <div className="absolute top-2 left-2 flex flex-col gap-2">
+          <div className="absolute top-2 left-2 flex flex-col gap-2 z-10">
             {product.isNew && (
               <span className="px-2 py-1 bg-primary-900 text-white text-xs font-bold rounded">
                 NEW
-              </span>
-            )}
-            {hasDiscount && (
-              <span className="px-2 py-1 bg-accent-500 text-black text-xs font-bold rounded">
-                SALE
               </span>
             )}
             {product.isBestSeller && (
@@ -61,21 +76,21 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Product Info */}
-        <div className="p-4">
+        <div className="p-4 bg-primary-900 relative overflow-hidden flex-1 flex flex-col">
           {/* Brand & Category */}
-          <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+          <div className="flex items-center justify-between text-xs text-gray-400 mb-2 relative z-10">
             <span className="font-medium">{product.brand}</span>
             <span>{product.category.name}</span>
           </div>
 
           {/* Product Name */}
-          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary-600 transition">
+          <h3 className="font-bold text-white mb-2 line-clamp-2 relative z-10">
             {product.name}
           </h3>
 
           {/* Rating */}
           {product.rating && (
-            <div className="flex items-center gap-1 mb-2">
+            <div className="flex items-center gap-1 mb-2 relative z-10">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
                   <Star
@@ -83,7 +98,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                     className={`w-4 h-4 ${
                       i < Math.floor(product.rating!)
                         ? 'fill-yellow-400 text-yellow-400'
-                        : 'text-gray-300'
+                        : 'text-gray-600'
                     }`}
                   />
                 ))}
@@ -95,38 +110,49 @@ export default function ProductCard({ product }: ProductCardProps) {
           )}
 
           {/* Short Description */}
-          <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+          <p className="text-sm text-gray-300 mb-3 line-clamp-2 relative z-10 flex-1">
             {product.shortDescription}
           </p>
 
           {/* Price & Add to Cart */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between relative z-10 mt-auto">
             <div>
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-bold text-gray-900">
-                  ${displayPrice.toFixed(2)}
+              <div className="flex flex-col">
+                <span className="text-2xl font-bold text-white">
+                  {formatPriceSimple(displayPrice)}
                 </span>
                 {hasDiscount && (
-                  <span className="text-sm text-gray-500 line-through">
-                    ${product.price.toFixed(2)}
+                  <span className="text-base text-gray-400 line-through mt-1">
+                    {formatPriceSimple(product.price)}
                   </span>
                 )}
               </div>
               {hasDiscount && (
-                <span className="text-xs text-accent-600 font-medium">
-                  Save ${(product.price - product.salePrice!).toFixed(2)}
+                <span className="text-xs text-accent-500 font-bold mt-1 block">
+                  Save {formatPriceSimple(product.price - product.salePrice!)}
                 </span>
               )}
             </div>
 
-            <button
-              onClick={handleAddToCart}
-              disabled={!product.inStock}
-              className="p-2 bg-primary-900 text-white rounded-lg hover:bg-black disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
-              title="Add to cart"
-            >
-              <ShoppingCart className="w-5 h-5" />
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={handleAddToCart}
+                disabled={!product.inStock}
+                className="relative p-2.5 bg-black text-white rounded-lg hover:bg-accent-600 hover:scale-110 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-300 shadow-md hover:shadow-lg"
+                title="Add to cart"
+              >
+                <ShoppingCart className="w-5 h-5" />
+                <Plus className="w-3 h-3 absolute -top-0.5 -right-0.5 bg-accent-500 rounded-full" strokeWidth={3} />
+              </button>
+              <button
+                onClick={handleWhatsAppOrder}
+                disabled={!product.inStock}
+                className="p-2.5 bg-green-600 text-white rounded-lg hover:bg-green-700 hover:scale-110 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-300 shadow-md hover:shadow-lg"
+                title="Order via WhatsApp"
+              >
+                <MessageCircle className="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </div>
       </div>

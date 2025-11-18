@@ -25,7 +25,7 @@ async function fetchAPI(path: string, params = {}, options = {}) {
 
   const response = await fetch(url, {
     ...options,
-    next: { revalidate: 60 }, // Revalidate every 60 seconds
+    cache: 'no-store', // Disable cache for development
   })
 
   if (!response.ok) {
@@ -36,34 +36,57 @@ async function fetchAPI(path: string, params = {}, options = {}) {
 }
 
 // Transform Strapi product to our Product type
-function transformProduct(strapiProduct: any): Product {
-  const data = strapiProduct.attributes
-  const category = data.category?.data
+function transformProduct(strapiProduct: any): Product | null {
+  if (!strapiProduct) {
+    return null
+  }
 
-  return {
-    id: strapiProduct.id.toString(),
-    slug: data.slug,
-    name: data.name,
-    description: data.description || '',
-    shortDescription: data.shortDescription || '',
-    price: parseFloat(data.price),
-    salePrice: data.salePrice ? parseFloat(data.salePrice) : undefined,
-    currency: 'USD',
-    images: data.images?.data?.map((img: any, index: number) => ({
-      id: img.id.toString(),
-      url: getStrapiMedia(img.attributes.url) || '',
-      alt: img.attributes.alternativeText || data.name,
+  // Strapi v5 returns flat data without attributes wrapper
+  const data = strapiProduct
+
+  // Handle images - Strapi v5 can have images as array or media field
+  let productImages = []
+
+  if (data.images && Array.isArray(data.images) && data.images.length > 0) {
+    // Map all images from the images array
+    productImages = data.images.map((img: any, index: number) => ({
+      id: img.id?.toString() || img.documentId || `img-${index}`,
+      url: getStrapiMedia(img.url) || '',
+      alt: img.alternativeText || img.name || data.name,
       isPrimary: index === 0,
       order: index,
-    })) || [],
-    category: category ? {
-      id: category.id.toString(),
-      slug: category.attributes.slug,
-      name: category.attributes.name,
-      description: category.attributes.description,
-      image: category.attributes.image?.data
-        ? getStrapiMedia(category.attributes.image.data.attributes.url)
-        : undefined,
+    }))
+  } else if (data.imageUrl) {
+    // Fallback to single imageUrl field if images array is empty
+    productImages = [{
+      id: '1',
+      url: data.imageUrl,
+      alt: data.name,
+      isPrimary: true,
+      order: 0,
+    }]
+  }
+
+  return {
+    id: data.id?.toString() || data.documentId,
+    slug: data.slug || '',
+    name: data.name || '',
+    description: data.description || '',
+    shortDescription: data.shortDescription || '',
+    price: data.price ? parseFloat(data.price.toString()) : 0,
+    salePrice: data.salePrice ? parseFloat(data.salePrice.toString()) : undefined,
+    currency: data.currency || 'LKR',
+    images: productImages,
+    category: data.category ? {
+      id: data.category.id?.toString() || data.category.documentId,
+      slug: data.category.slug || '',
+      name: data.category.name || '',
+      description: data.category.description,
+      image: data.category.image?.url
+        ? getStrapiMedia(data.category.image.url)
+        : (data.category.image && Array.isArray(data.category.image) && data.category.image.length > 0
+          ? getStrapiMedia(data.category.image[0].url)
+          : data.category.imageUrl),
     } : {
       id: '0',
       slug: 'uncategorized',
@@ -72,7 +95,7 @@ function transformProduct(strapiProduct: any): Product {
     brand: data.brand || '',
     sku: data.sku || '',
     inStock: data.inStock ?? true,
-    stockQuantity: data.stockQuantity,
+    stockQuantity: data.stockQuantity || 0,
     tags: data.tags || [],
     specifications: data.specifications || [],
     rating: data.rating,
@@ -86,18 +109,32 @@ function transformProduct(strapiProduct: any): Product {
 }
 
 // Transform Strapi category to our Category type
-function transformCategory(strapiCategory: any): Category {
-  const data = strapiCategory.attributes
+function transformCategory(strapiCategory: any): Category | null {
+  if (!strapiCategory) {
+    return null
+  }
+
+  // Strapi v5 returns flat data without attributes wrapper
+  const data = strapiCategory
+
+  // Handle category image - check for image object first, then imageUrl field
+  let categoryImage = undefined
+
+  if (data.image?.url) {
+    categoryImage = getStrapiMedia(data.image.url)
+  } else if (data.image && Array.isArray(data.image) && data.image.length > 0) {
+    categoryImage = getStrapiMedia(data.image[0].url)
+  } else if (data.imageUrl) {
+    categoryImage = data.imageUrl
+  }
 
   return {
-    id: strapiCategory.id.toString(),
-    slug: data.slug,
-    name: data.name,
+    id: data.id?.toString() || data.documentId,
+    slug: data.slug || '',
+    name: data.name || '',
     description: data.description,
-    image: data.image?.data
-      ? getStrapiMedia(data.image.data.attributes.url)
-      : undefined,
-    order: data.order,
+    image: categoryImage,
+    order: data.order || 0,
   }
 }
 
@@ -110,7 +147,7 @@ export async function getAllProducts(): Promise<Product[]> {
       sort: ['featured:desc', 'createdAt:desc'],
     })
 
-    return response.data.map(transformProduct)
+    return response.data.map(transformProduct).filter((p: Product | null) => p !== null)
   } catch (error) {
     console.error('Error fetching products:', error)
     return []
@@ -143,7 +180,7 @@ export async function getProductsByCategory(categorySlug: string): Promise<Produ
       populate: ['images', 'category', 'category.image'],
     })
 
-    return response.data.map(transformProduct)
+    return response.data.map(transformProduct).filter((p: Product | null) => p !== null)
   } catch (error) {
     console.error('Error fetching products by category:', error)
     return []
@@ -158,7 +195,7 @@ export async function getFeaturedProducts(): Promise<Product[]> {
       pagination: { limit: 8 },
     })
 
-    return response.data.map(transformProduct)
+    return response.data.map(transformProduct).filter((p: Product | null) => p !== null)
   } catch (error) {
     console.error('Error fetching featured products:', error)
     return []
@@ -172,7 +209,7 @@ export async function getAllCategories(): Promise<Category[]> {
       sort: ['order:asc', 'name:asc'],
     })
 
-    return response.data.map(transformCategory)
+    return response.data.map(transformCategory).filter((c: Category | null) => c !== null)
   } catch (error) {
     console.error('Error fetching categories:', error)
     return []
@@ -207,7 +244,7 @@ export async function searchProducts(query: string): Promise<Product[]> {
       populate: ['images', 'category'],
     })
 
-    return response.data.map(transformProduct)
+    return response.data.map(transformProduct).filter((p: Product | null) => p !== null)
   } catch (error) {
     console.error('Error searching products:', error)
     return []

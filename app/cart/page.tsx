@@ -2,8 +2,10 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft } from 'lucide-react'
-import { useCartStore, getTax, getShipping, getTotal } from '@/lib/store/cartStore'
+import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft, MessageCircle } from 'lucide-react'
+import { useCartStore } from '@/lib/store/cartStore'
+import { formatPriceSimple } from '@/lib/utils/currency'
+import { checkoutCartViaWhatsApp } from '@/lib/utils/whatsapp'
 
 export default function CartPage() {
   const items = useCartStore((state) => state.items)
@@ -12,9 +14,9 @@ export default function CartPage() {
   const clearCart = useCartStore((state) => state.clearCart)
   const subtotal = useCartStore((state) => state.getSubtotal())
 
-  const tax = getTax(subtotal)
-  const shipping = getShipping(subtotal)
-  const total = getTotal(subtotal)
+  const handleWhatsAppCheckout = () => {
+    checkoutCartViaWhatsApp(items)
+  }
 
   if (items.length === 0) {
     return (
@@ -66,12 +68,20 @@ export default function CartPage() {
                   <div className="flex flex-col sm:flex-row gap-4 p-4">
                     {/* Product Image */}
                     <div className="relative w-full sm:w-32 aspect-square bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                      <Image
-                        src={item.product.images[0].url}
-                        alt={item.product.images[0].alt}
-                        fill
-                        className="object-cover"
-                      />
+                      {item.product.images?.[0] ? (
+                        <Image
+                          src={item.product.images[0].url}
+                          alt={item.product.images[0].alt}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                          <span className="text-4xl font-bold text-gray-400">
+                            {item.product.name.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                      )}
                     </div>
 
                     {/* Product Info */}
@@ -128,10 +138,10 @@ export default function CartPage() {
                         {/* Price */}
                         <div className="text-right">
                           <div className="font-bold text-lg text-gray-900">
-                            ${(displayPrice * item.quantity).toFixed(2)}
+                            {formatPriceSimple(displayPrice * item.quantity)}
                           </div>
                           <div className="text-sm text-gray-600">
-                            ${displayPrice.toFixed(2)} each
+                            {formatPriceSimple(displayPrice)} each
                           </div>
                         </div>
                       </div>
@@ -158,41 +168,21 @@ export default function CartPage() {
               </h2>
 
               <div className="space-y-4 mb-6">
-                <div className="flex justify-between text-gray-600">
-                  <span>Subtotal</span>
-                  <span className="font-semibold">${subtotal.toFixed(2)}</span>
+                <div className="flex justify-between text-xl font-bold text-gray-900">
+                  <span>Total</span>
+                  <span>{formatPriceSimple(subtotal)}</span>
                 </div>
-                <div className="flex justify-between text-gray-600">
-                  <span>Tax (8%)</span>
-                  <span className="font-semibold">${tax.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between text-gray-600">
-                  <span>Shipping</span>
-                  <span className="font-semibold">
-                    {shipping === 0 ? (
-                      <span className="text-green-600">FREE</span>
-                    ) : (
-                      `$${shipping.toFixed(2)}`
-                    )}
-                  </span>
-                </div>
-
-                {subtotal < 100 && (
-                  <div className="text-xs text-gray-500 bg-yellow-50 p-3 rounded">
-                    Add ${(100 - subtotal).toFixed(2)} more for free shipping!
-                  </div>
-                )}
-
-                <div className="border-t border-gray-200 pt-4">
-                  <div className="flex justify-between text-xl font-bold text-gray-900">
-                    <span>Total</span>
-                    <span>${total.toFixed(2)}</span>
-                  </div>
+                <div className="text-xs text-gray-500 bg-blue-50 p-3 rounded">
+                  Final price will be confirmed via WhatsApp including delivery charges
                 </div>
               </div>
 
-              <button className="w-full px-6 py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-lg transition mb-4">
-                Proceed to Checkout
+              <button
+                onClick={handleWhatsAppCheckout}
+                className="w-full px-6 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg transition mb-4 flex items-center justify-center gap-2"
+              >
+                <MessageCircle className="w-5 h-5" />
+                Order via WhatsApp
               </button>
 
               <Link
@@ -207,15 +197,15 @@ export default function CartPage() {
                 <div className="space-y-3 text-sm text-gray-600">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span>Secure checkout</span>
+                    <span>Genuine motorcycle parts</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span>Free returns within 30 days</span>
+                    <span>Fast delivery across Sri Lanka</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span>Money-back guarantee</span>
+                    <span>Warranty on all products</span>
                   </div>
                 </div>
               </div>

@@ -1,59 +1,35 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin } from 'lucide-react'
+import { Facebook, Mail, MapPin } from 'lucide-react'
+import { FaWhatsapp } from 'react-icons/fa'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-gray-900 text-gray-300">
+    <footer className="animated-gradient-bg text-gray-300">
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About Section */}
           <div>
-            <Image
-              src="https://i.ibb.co/Ps3HFYh4/veloce-moto-logo.png"
-              alt="Veloce Moto Logo"
-              width={150}
-              height={50}
-              className="h-10 w-auto mb-4 brightness-0 invert"
-            />
+            <div className="mb-4">
+              <div className="flex items-end gap-1">
+                <span className="veloce-text text-accent-500 text-2xl">VELOCE</span>
+                <span className="moto-text text-white text-2xl translate-y-2">MOTO</span>
+              </div>
+            </div>
             <p className="text-sm mb-4">
-              Your trusted source for premium automotive parts and accessories.
+              Your trusted source for premium motorcycle parts and accessories.
               Quality products, expert support, and fast shipping.
             </p>
             <div className="flex gap-4">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/Velocemoto2001"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-primary-400 transition"
+                className="hover:text-accent-500 transition"
               >
                 <Facebook className="w-5 h-5" />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary-400 transition"
-              >
-                <Instagram className="w-5 h-5" />
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary-400 transition"
-              >
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-primary-400 transition"
-              >
-                <Youtube className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -63,27 +39,27 @@ export default function Footer() {
             <h3 className="text-white font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/products" className="hover:text-primary-400 transition">
+                <Link href="/products" className="hover:text-accent-500 transition">
                   All Products
                 </Link>
               </li>
               <li>
-                <Link href="/deals" className="hover:text-primary-400 transition">
+                <Link href="/deals" className="hover:text-accent-500 transition">
                   Special Deals
                 </Link>
               </li>
               <li>
-                <Link href="/brands" className="hover:text-primary-400 transition">
+                <Link href="/brands" className="hover:text-accent-500 transition">
                   Brands
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-primary-400 transition">
+                <Link href="/about" className="hover:text-accent-500 transition">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="hover:text-primary-400 transition">
+                <Link href="/blog" className="hover:text-accent-500 transition">
                   Blog
                 </Link>
               </li>
@@ -95,27 +71,27 @@ export default function Footer() {
             <h3 className="text-white font-bold mb-4">Customer Service</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/contact" className="hover:text-primary-400 transition">
+                <Link href="/contact" className="hover:text-accent-500 transition">
                   Contact Us
                 </Link>
               </li>
               <li>
-                <Link href="/shipping" className="hover:text-primary-400 transition">
+                <Link href="/shipping" className="hover:text-accent-500 transition">
                   Shipping Information
                 </Link>
               </li>
               <li>
-                <Link href="/returns" className="hover:text-primary-400 transition">
+                <Link href="/returns" className="hover:text-accent-500 transition">
                   Returns & Exchanges
                 </Link>
               </li>
               <li>
-                <Link href="/warranty" className="hover:text-primary-400 transition">
+                <Link href="/warranty" className="hover:text-accent-500 transition">
                   Warranty
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="hover:text-primary-400 transition">
+                <Link href="/faq" className="hover:text-accent-500 transition">
                   FAQ
                 </Link>
               </li>
@@ -128,34 +104,21 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
                 <MapPin className="w-5 h-5 mt-0.5 flex-shrink-0" />
-                <span>123 Auto Parts Blvd<br />Los Angeles, CA 90001</span>
+                <span>Veloce Moto<br />Galle Road, Aluthgama</span>
               </li>
               <li className="flex items-center gap-2">
-                <Phone className="w-5 h-5 flex-shrink-0" />
-                <a href="tel:+18005551234" className="hover:text-primary-400 transition">
-                  1-800-555-1234
+                <FaWhatsapp className="w-5 h-5 flex-shrink-0" />
+                <a href="https://wa.me/94741813772" target="_blank" rel="noopener noreferrer" className="hover:text-accent-500 transition">
+                  (+94) 74 181 3772
                 </a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-5 h-5 flex-shrink-0" />
-                <a href="mailto:support@velocemoto.com" className="hover:text-primary-400 transition">
-                  support@velocemoto.com
+                <a href="mailto:yamahamotohubsl@gmail.com" className="hover:text-accent-500 transition">
+                  yamahamotohubsl@gmail.com
                 </a>
               </li>
             </ul>
-            <div className="mt-4">
-              <p className="text-xs mb-2">Subscribe to our newsletter</p>
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  className="flex-1 px-3 py-2 text-sm bg-gray-800 border border-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
-                />
-                <button className="px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded hover:bg-primary-700 transition">
-                  Subscribe
-                </button>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -164,13 +127,13 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
             <p>&copy; {currentYear} Veloce Moto. All rights reserved.</p>
             <div className="flex gap-6">
-              <Link href="/privacy" className="hover:text-primary-400 transition">
+              <Link href="/privacy" className="hover:text-accent-500 transition">
                 Privacy Policy
               </Link>
-              <Link href="/terms" className="hover:text-primary-400 transition">
+              <Link href="/terms" className="hover:text-accent-500 transition">
                 Terms of Service
               </Link>
-              <Link href="/sitemap" className="hover:text-primary-400 transition">
+              <Link href="/sitemap" className="hover:text-accent-500 transition">
                 Sitemap
               </Link>
             </div>

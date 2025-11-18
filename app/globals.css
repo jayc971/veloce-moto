@@ -19,3 +19,77 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+/* Logo container */
+.logo-speed-animation {
+  position: relative;
+  overflow: visible;
+  display: inline-block;
+  padding: 12px;
+}
+
+
+/* Animated glow for logo */
+@keyframes logo-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.8));
+  }
+}
+
+.logo-glow-animation {
+  animation: logo-glow 2s ease-in-out infinite;
+}
+
+/* Animated diagonal gradient background for homepage */
+.animated-gradient-bg {
+  background: linear-gradient(
+    135deg,
+    #0a0a0a 0%,
+    #262626 25%,
+    #171717 50%,
+    #0a0a0a 75%,
+    #262626 100%
+  );
+  background-size: 400% 400%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Faded static gradient background for other pages */
+.faded-gradient-bg {
+  background: linear-gradient(
+    180deg,
+    #1a1a1a 0%,
+    #0f0f0f 100%
+  );
+}
+
+/* Racing font styles for motorvehicle branding */
+.moto-text {
+  font-family: var(--font-teko), sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  font-style: italic;
+  transform: skewX(-8deg);
+}
+
+.veloce-text {
+  font-family: var(--font-orbitron), sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
