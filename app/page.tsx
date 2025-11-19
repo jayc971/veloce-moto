@@ -18,7 +18,7 @@ export default async function HomePage() {
             <div>
               <div className="mb-4 flex items-end gap-1">
                 <span className="veloce-text text-accent-500 text-4xl lg:text-6xl">VELOCE</span>
-                <span className="moto-text text-white text-5xl lg:text-7xl translate-y-2 lg:translate-y-3">MOTO</span>
+                <span className="moto-text text-white text-5xl lg:text-7xl translate-y-4 lg:translate-y-5">MOTO</span>
               </div>
               <h1 className="text-3xl lg:text-5xl font-bold mb-6 leading-tight">
                 Premium Motorcycle Parts & Accessories
