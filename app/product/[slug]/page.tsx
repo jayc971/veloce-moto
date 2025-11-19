@@ -118,12 +118,12 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
           <div className="grid lg:grid-cols-2 gap-8 p-6 lg:p-8">
             {/* Images */}
             <div>
-              <div className="relative aspect-square mb-4 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+              <div className="relative aspect-square mb-4 shadow-[0_10px_40px_rgba(0,0,0,0.5)] border-0">
                 <Image
                   src={product.images[selectedImage].url}
                   alt={product.images[selectedImage].alt}
                   fill
-                  className="object-contain p-4 rounded-xl"
+                  className="object-contain p-4 rounded-xl border-0"
                   priority
                 />
 
@@ -161,7 +161,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                     <button
                       key={image.id}
                       onClick={() => setSelectedImage(index)}
-                      className={`relative flex-shrink-0 w-20 h-20 transition-all ${
+                      className={`relative flex-shrink-0 w-20 h-20 transition-all border-0 bg-transparent ${
                         selectedImage === index
                           ? 'ring-2 ring-accent-500 rounded-lg'
                           : 'opacity-70 hover:opacity-100'
@@ -171,7 +171,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                         src={image.url}
                         alt={image.alt}
                         fill
-                        className="object-contain p-1 rounded-lg"
+                        className="object-contain p-1 rounded-lg border-0"
                       />
                     </button>
                   ))}
