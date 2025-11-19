@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { ShoppingCart, Menu, X, ChevronDown, Search } from 'lucide-react'
+import { FaWhatsapp } from 'react-icons/fa'
 import { useState, useEffect } from 'react'
 import { useCartStore } from '@/lib/store/cartStore'
 import { getAllCategories } from '@/lib/strapi/api'
@@ -161,8 +162,17 @@ export default function Header() {
             )}
           </div>
 
-          {/* Search, Cart & Mobile Menu */}
+          {/* Search, Cart, WhatsApp & Mobile Menu */}
           <div className="flex items-center gap-4 flex-shrink-0 ml-auto">
+            {/* WhatsApp Button - Tablet & Mobile Only */}
+            <a
+              href="https://wa.me/94741813772"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="lg:hidden p-2 hover:bg-primary-800 rounded-lg transition text-green-500"
+            >
+              <FaWhatsapp className="w-6 h-6" />
+            </a>
             <Link
               href="/products"
               className="p-2 hover:bg-primary-800 rounded-lg transition text-gray-300"
