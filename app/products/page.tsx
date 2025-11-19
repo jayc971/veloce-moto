@@ -141,7 +141,7 @@ export default function ProductsPage() {
                     id="sort"
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="pl-4 pr-12 py-2 bg-primary-800 border border-primary-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500"
+                    className="pl-4 py-2 bg-primary-800 border border-primary-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 custom-select"
                   >
                     <option value="featured">Featured</option>
                     <option value="name">Name</option>
