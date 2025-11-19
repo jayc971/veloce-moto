@@ -18,7 +18,7 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const itemCount = useCartStore((state) => state.getItemCount())
 
-  const MAX_VISIBLE_CATEGORIES = 5
+  const MAX_VISIBLE_CATEGORIES = 4
 
   useEffect(() => {
     const fetchCategories = async () => {
