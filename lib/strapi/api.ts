@@ -108,7 +108,11 @@ function transformProduct(strapiProduct: any): Product | null {
     inStock: data.inStock ?? true,
     stockQuantity: data.stockQuantity || 0,
     tags: data.tags || [],
-    specifications: data.specifications || [],
+    specifications: (data.specifications || []).map((spec: any) => ({
+      name: spec.name || spec.key || spec.label || '',
+      value: spec.value || '',
+      unit: spec.unit || '',
+    })),
     rating: data.rating,
     reviewCount: data.reviewCount || 0,
     featured: data.featured || false,
