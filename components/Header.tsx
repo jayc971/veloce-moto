@@ -120,8 +120,16 @@ export default function Header() {
             )}
           </nav>
 
+          {/* All Products - Tablet Only */}
+          <Link
+            href="/products"
+            className="hidden md:block lg:hidden text-gray-300 hover:text-accent-500 font-medium transition whitespace-nowrap ml-auto"
+          >
+            All Products
+          </Link>
+
           {/* Search, Cart & Mobile Menu */}
-          <div className="flex items-center gap-4 flex-shrink-0 ml-auto lg:ml-0">
+          <div className="flex items-center gap-4 flex-shrink-0 ml-auto md:ml-0">
             <Link
               href="/products"
               className="p-2 hover:bg-primary-800 rounded-lg transition text-gray-300"
@@ -157,7 +165,7 @@ export default function Header() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <nav className="lg:hidden bg-primary-900 border-t border-primary-800">
-          <ul className="py-4">
+          <ul className="py-4 container mx-auto">
             <li>
               <Link
                 href="/products"
