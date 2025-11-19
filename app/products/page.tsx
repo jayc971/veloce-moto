@@ -147,17 +147,6 @@ export default function ProductsPage() {
                   Showing {sortedProducts.length} products
                 </p>
                 <div className="flex items-center gap-4">
-                  {/* Search Bar */}
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <input
-                      type="text"
-                      placeholder="Search"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 pr-4 py-2 bg-primary-800 border border-primary-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 placeholder-gray-400 w-40 sm:w-48"
-                    />
-                  </div>
                   <div className="flex items-center gap-2">
                     <label htmlFor="sort" className="text-sm text-gray-300">
                       Sort by:
@@ -174,6 +163,17 @@ export default function ProductsPage() {
                       <option value="price-high">Price: High to Low</option>
                       <option value="rating">Highest Rated</option>
                     </select>
+                  </div>
+                  {/* Search Bar */}
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="Search"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10 pr-4 py-2 bg-primary-800 border border-primary-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 placeholder-gray-400 w-40 sm:w-48"
+                    />
                   </div>
                 </div>
               </div>
