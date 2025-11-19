@@ -3,13 +3,16 @@
 import { useState, useEffect, useRef } from 'react'
 import ProductCard from '@/components/ProductCard'
 import { getAllProducts } from '@/lib/strapi/api'
-import { Search } from 'lucide-react'
+import { Search, ChevronLeft, ChevronRight } from 'lucide-react'
 import type { Product } from '@/types'
+
+const ITEMS_PER_PAGE = 6
 
 export default function SearchPage() {
   const [products, setProducts] = useState<Product[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [loading, setLoading] = useState(true)
+  const [currentPage, setCurrentPage] = useState(1)
   const searchInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -35,11 +38,10 @@ export default function SearchPage() {
     }
   }, [])
 
-  // Get random products for initial display
-  const getRandomProducts = (allProducts: Product[], count: number) => {
-    const shuffled = [...allProducts].sort(() => 0.5 - Math.random())
-    return shuffled.slice(0, count)
-  }
+  // Reset to page 1 when search query changes
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [searchQuery])
 
   // Filter products based on search query
   const filteredProducts = searchQuery
@@ -52,7 +54,17 @@ export default function SearchPage() {
           product.category.name.toLowerCase().includes(query)
         )
       })
-    : getRandomProducts(products, 6)
+    : products
+
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE)
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE
+  const paginatedProducts = filteredProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE)
+
+  const goToPage = (page: number) => {
+    setCurrentPage(page)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   if (loading) {
     return (
@@ -91,12 +103,49 @@ export default function SearchPage() {
         )}
 
         {/* Products Grid */}
-        {filteredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+        {paginatedProducts.length > 0 ? (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {paginatedProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-8">
+                <button
+                  onClick={() => goToPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="p-2 bg-primary-800 border border-primary-700 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary-700 transition"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => goToPage(page)}
+                    className={`px-4 py-2 rounded-lg font-medium transition ${
+                      currentPage === page
+                        ? 'bg-accent-500 text-white'
+                        : 'bg-primary-800 border border-primary-700 text-gray-300 hover:bg-primary-700'
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                <button
+                  onClick={() => goToPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="p-2 bg-primary-800 border border-primary-700 rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary-700 transition"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            )}
+          </>
         ) : (
           <div className="bg-primary-800 rounded-lg shadow-lg p-12 text-center">
             <p className="text-gray-300">No products found for &quot;{searchQuery}&quot;</p>
