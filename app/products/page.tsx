@@ -1,13 +1,12 @@
 'use client'
 
-import { useState, useEffect, useRef, Suspense } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useState, useEffect } from 'react'
 import ProductCard from '@/components/ProductCard'
 import { getAllProducts, getAllCategories } from '@/lib/strapi/api'
 import { Filter, Search } from 'lucide-react'
 import type { Product, Category } from '@/types'
 
-function ProductsContent() {
+export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
@@ -15,15 +14,6 @@ function ProductsContent() {
   const [showFilters, setShowFilters] = useState(false)
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
-  const searchInputRef = useRef<HTMLInputElement>(null)
-  const searchParams = useSearchParams()
-
-  // Auto-focus search bar when coming from navbar search icon
-  useEffect(() => {
-    if (searchParams.get('focus') === 'search' && searchInputRef.current) {
-      searchInputRef.current.focus()
-    }
-  }, [searchParams])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -156,17 +146,17 @@ function ProductsContent() {
                 <p className="text-gray-300">
                   Showing {sortedProducts.length} products
                 </p>
-                <div className="flex items-center gap-4 w-full sm:w-auto">
-                  {/* Sort By - Hidden on mobile */}
-                  <div className="hidden sm:flex items-center gap-2">
-                    <label htmlFor="sort" className="text-sm text-gray-300">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
+                  {/* Sort By */}
+                  <div className="flex items-center gap-2">
+                    <label htmlFor="sort" className="text-sm text-gray-300 whitespace-nowrap">
                       Sort by:
                     </label>
                     <select
                       id="sort"
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
-                      className="w-44 pl-4 py-2 bg-primary-800 border border-primary-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 custom-select"
+                      className="flex-1 sm:w-44 pl-4 py-2 bg-primary-800 border border-primary-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 custom-select"
                     >
                       <option value="featured">Featured</option>
                       <option value="name">Name</option>
@@ -176,10 +166,9 @@ function ProductsContent() {
                     </select>
                   </div>
                   {/* Search Bar */}
-                  <div className="relative flex-1 sm:flex-none">
+                  <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
-                      ref={searchInputRef}
                       type="text"
                       placeholder="Search"
                       value={searchQuery}
@@ -207,20 +196,5 @@ function ProductsContent() {
         </div>
       </div>
     </div>
-  )
-}
-
-export default function ProductsPage() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen faded-gradient-bg flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent-500 mx-auto mb-4"></div>
-          <p className="text-gray-300">Loading products...</p>
-        </div>
-      </div>
-    }>
-      <ProductsContent />
-    </Suspense>
   )
 }
