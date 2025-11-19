@@ -138,11 +138,11 @@ export default function ProductCard({ product }: ProductCardProps) {
               <button
                 onClick={handleAddToCart}
                 disabled={!product.inStock}
-                className="relative p-2.5 bg-black text-white rounded-lg hover:bg-accent-600 hover:scale-110 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-300 shadow-md hover:shadow-lg"
+                className="relative p-2.5 bg-primary-800 text-gray-300 rounded-lg hover:bg-primary-700 hover:text-accent-500 disabled:bg-gray-600 disabled:text-gray-400 disabled:cursor-not-allowed transition-all duration-300"
                 title="Add to cart"
               >
                 <ShoppingCart className="w-5 h-5" />
-                <Plus className="w-3 h-3 absolute -top-0.5 -right-0.5 bg-accent-500 rounded-full" strokeWidth={3} />
+                <Plus className="w-3 h-3 absolute -top-0.5 -right-0.5 bg-accent-500 text-white rounded-full" strokeWidth={3} />
               </button>
               <button
                 onClick={handleWhatsAppOrder}
