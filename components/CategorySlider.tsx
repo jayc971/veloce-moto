@@ -14,6 +14,11 @@ export default function CategorySlider({ categories }: CategorySliderProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [itemsPerView, setItemsPerView] = useState(6)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd] = useState<number | null>(null)
+
+  // Minimum swipe distance to trigger navigation (in px)
+  const minSwipeDistance = 50
 
   // Determine how many items to show based on screen size
   useEffect(() => {
@@ -59,6 +64,29 @@ export default function CategorySlider({ categories }: CategorySliderProps) {
     setTimeout(() => setIsTransitioning(false), 500)
   }
 
+  // Touch event handlers for swipe functionality
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null)
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX)
+  }
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+
+    if (isLeftSwipe) {
+      goToNext()
+    } else if (isRightSwipe) {
+      goToPrevious()
+    }
+  }
+
   const visibleCategories = categories.slice(currentIndex, currentIndex + itemsPerView)
 
   // If we're at the end and don't have enough items, wrap around
@@ -68,7 +96,12 @@ export default function CategorySlider({ categories }: CategorySliderProps) {
   }
 
   return (
-    <div className="relative group">
+    <div
+      className="relative group"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+    >
       {/* Navigation Arrows */}
       {categories.length > itemsPerView && (
         <>

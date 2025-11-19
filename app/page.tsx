@@ -46,7 +46,7 @@ export default async function HomePage() {
       {/* Features */}
       <section className="py-12 bg-primary-900 border-y border-primary-800">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
             <div className="flex flex-col md:flex-row items-center md:items-start gap-4 text-center md:text-left">
               <div className="p-3 bg-accent-500/10 rounded-lg">
                 <Truck className="w-6 h-6 text-accent-500" />
