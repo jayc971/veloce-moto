@@ -92,7 +92,7 @@ export default function ProductsPage() {
 
             {/* Filters */}
             <div
-              className={`bg-primary-900 rounded-lg shadow-lg p-6 ${
+              className={`bg-primary-800 rounded-lg shadow-lg p-6 ${
                 showFilters ? 'block' : 'hidden lg:block'
               }`}
             >
@@ -128,7 +128,7 @@ export default function ProductsPage() {
           {/* Products Grid */}
           <div className="flex-1">
             {/* Sort & Results */}
-            <div className="bg-primary-900 rounded-lg shadow-lg p-4 mb-6">
+            <div className="bg-primary-800 rounded-lg shadow-lg p-4 mb-6">
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <p className="text-gray-300">
                   Showing {sortedProducts.length} products
@@ -161,7 +161,7 @@ export default function ProductsPage() {
                 ))}
               </div>
             ) : (
-              <div className="bg-primary-900 rounded-lg shadow-lg p-12 text-center">
+              <div className="bg-primary-800 rounded-lg shadow-lg p-12 text-center">
                 <p className="text-gray-300">No products found in this category.</p>
               </div>
             )}

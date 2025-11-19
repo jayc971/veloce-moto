@@ -99,7 +99,7 @@ export default function CategorySlider({ categories }: CategorySliderProps) {
               isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
             }`}
           >
-            <div className="rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1 flex flex-col w-full h-full bg-primary-900">
+            <div className="rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden transform hover:-translate-y-1 flex flex-col w-full h-full bg-primary-800">
               <div className="overflow-hidden relative flex-shrink-0">
                 {category.image ? (
                   <div className="relative aspect-square bg-white">
@@ -118,7 +118,7 @@ export default function CategorySlider({ categories }: CategorySliderProps) {
                   </div>
                 )}
               </div>
-              <div className="p-4 text-center bg-primary-900 relative overflow-hidden flex-1 flex items-center justify-center">
+              <div className="p-4 text-center bg-primary-800 relative overflow-hidden flex-1 flex items-center justify-center">
                 <h3 className="font-bold text-white relative z-10">
                   {category.name}
                 </h3>

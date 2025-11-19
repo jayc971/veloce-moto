@@ -107,7 +107,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
         </Link>
 
         {/* Product Details */}
-        <div className="bg-primary-900 rounded-lg shadow-lg overflow-hidden mb-12">
+        <div className="bg-primary-800 rounded-lg shadow-lg overflow-hidden mb-12">
           <div className="grid lg:grid-cols-2 gap-8 p-6 lg:p-8">
             {/* Images */}
             <div>

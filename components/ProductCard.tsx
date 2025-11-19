@@ -76,7 +76,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Product Info */}
-        <div className="p-4 bg-primary-900 relative overflow-hidden flex-1 flex flex-col">
+        <div className="p-4 bg-primary-800 relative overflow-hidden flex-1 flex flex-col">
           {/* Brand & Category */}
           <div className="flex items-center justify-between text-xs text-gray-400 mb-2 relative z-10">
             <span className="font-medium">{product.brand}</span>

@@ -22,7 +22,7 @@ export default function CartPage() {
     return (
       <div className="min-h-screen faded-gradient-bg">
         <div className="container mx-auto px-4 py-16">
-          <div className="max-w-2xl mx-auto bg-primary-900 rounded-lg shadow-md p-12 text-center">
+          <div className="max-w-2xl mx-auto bg-primary-800 rounded-lg shadow-md p-12 text-center">
             <ShoppingBag className="w-24 h-24 mx-auto text-gray-500 mb-6" />
             <h2 className="text-3xl font-bold text-white mb-4">
               Your cart is empty
@@ -63,7 +63,7 @@ export default function CartPage() {
               return (
                 <div
                   key={item.product.id}
-                  className="bg-primary-900 rounded-lg shadow-md overflow-hidden"
+                  className="bg-primary-800 rounded-lg shadow-md overflow-hidden"
                 >
                   <div className="flex flex-col sm:flex-row gap-4 p-4">
                     {/* Product Image */}
@@ -162,7 +162,7 @@ export default function CartPage() {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-primary-900 rounded-lg shadow-md p-6 sticky top-24">
+            <div className="bg-primary-800 rounded-lg shadow-md p-6 sticky top-24">
               <h2 className="text-xl font-bold text-white mb-6">
                 Order Summary
               </h2>

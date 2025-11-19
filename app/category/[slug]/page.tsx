@@ -102,7 +102,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
         </div>
 
         {/* Sort & Results */}
-        <div className="bg-primary-900 rounded-lg shadow-lg p-4 mb-6">
+        <div className="bg-primary-800 rounded-lg shadow-lg p-4 mb-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <p className="text-gray-300">
               {sortedProducts.length} product{sortedProducts.length !== 1 ? 's' : ''} found
@@ -135,7 +135,7 @@ export default function CategoryPage({ params }: { params: Promise<{ slug: strin
             ))}
           </div>
         ) : (
-          <div className="bg-primary-900 rounded-lg shadow-lg p-12 text-center">
+          <div className="bg-primary-800 rounded-lg shadow-lg p-12 text-center">
             <p className="text-gray-300">No products found in this category.</p>
           </div>
         )}
