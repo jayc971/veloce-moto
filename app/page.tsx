@@ -109,7 +109,7 @@ export default async function HomePage() {
             href="/products"
             className="inline-flex items-center gap-2 px-8 py-4 bg-accent-500 hover:bg-accent-600 text-white font-bold rounded-lg transition"
           >
-            Start Shopping <ArrowRight className="w-5 h-5" />
+            Explore More <ArrowRight className="w-5 h-5" />
           </Link>
         </div>
       </section>
