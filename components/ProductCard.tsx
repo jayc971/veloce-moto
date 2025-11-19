@@ -92,7 +92,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
 
           {/* Product Name */}
-          <h3 className="font-bold text-white mb-2 line-clamp-2 relative z-10 text-xl md:text-xl">
+          <h3 className="font-bold text-white mb-2 line-clamp-2 relative z-10 text-2xl md:text-xl">
             {product.name}
           </h3>
 
