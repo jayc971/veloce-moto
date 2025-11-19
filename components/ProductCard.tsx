@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { ShoppingCart, Star, MessageCircle, Plus } from 'lucide-react'
 import type { Product } from '@/types'
 import { useCartStore } from '@/lib/store/cartStore'
+import { useToastStore } from '@/lib/store/toastStore'
 import { formatPriceSimple } from '@/lib/utils/currency'
 import { orderProductViaWhatsApp } from '@/lib/utils/whatsapp'
 
@@ -14,10 +15,17 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem)
+  const addToast = useToastStore((state) => state.addToast)
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault()
     addItem(product)
+    addToast({
+      message: 'Product added to your cart',
+      type: 'success',
+      productName: product.name,
+      productImage: product.images?.[0]?.url,
+    })
   }
 
   const handleWhatsAppOrder = (e: React.MouseEvent) => {

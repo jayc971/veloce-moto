@@ -8,6 +8,7 @@ import { ShoppingCart, Star, Check, Truck, Shield, ArrowLeft, MessageCircle } fr
 import { getProductBySlug, getProductsByCategory } from '@/lib/strapi/api'
 import type { Product } from '@/types'
 import { useCartStore } from '@/lib/store/cartStore'
+import { useToastStore } from '@/lib/store/toastStore'
 import ProductCard from '@/components/ProductCard'
 import { formatPriceSimple } from '@/lib/utils/currency'
 import { orderProductViaWhatsApp } from '@/lib/utils/whatsapp'
@@ -20,6 +21,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   const [selectedImage, setSelectedImage] = useState(0)
   const [loading, setLoading] = useState(true)
   const addItem = useCartStore((state) => state.addItem)
+  const addToast = useToastStore((state) => state.addToast)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,7 +69,12 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
 
   const handleAddToCart = () => {
     addItem(product, quantity)
-    alert('Product added to cart!')
+    addToast({
+      message: `${quantity} item${quantity > 1 ? 's' : ''} added to your cart`,
+      type: 'success',
+      productName: product.name,
+      productImage: product.images?.[0]?.url,
+    })
   }
 
   const handleWhatsAppOrder = () => {

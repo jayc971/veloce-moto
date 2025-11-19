@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import ToastContainer from '@/components/Toast'
 import { Teko, Orbitron, Inter } from 'next/font/google'
 
 const teko = Teko({
@@ -82,6 +83,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <ToastContainer />
       </body>
     </html>
   )
