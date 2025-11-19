@@ -86,7 +86,7 @@ export default function SearchPage() {
         {/* Results Info */}
         {searchQuery && (
           <p className="text-gray-300 mb-6">
-            {filteredProducts.length} {filteredProducts.length === 1 ? 'result' : 'results'} for "{searchQuery}"
+            {filteredProducts.length} {filteredProducts.length === 1 ? 'result' : 'results'} for &quot;{searchQuery}&quot;
           </p>
         )}
 
@@ -99,7 +99,7 @@ export default function SearchPage() {
           </div>
         ) : (
           <div className="bg-primary-800 rounded-lg shadow-lg p-12 text-center">
-            <p className="text-gray-300">No products found for "{searchQuery}"</p>
+            <p className="text-gray-300">No products found for &quot;{searchQuery}&quot;</p>
           </div>
         )}
       </div>
