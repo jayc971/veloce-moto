@@ -36,7 +36,7 @@ async function fetchAPI(path: string, params = {}, options: RequestInit = {}) {
   const response = await fetch(url, {
     ...options,
     headers,
-    cache: 'no-store', // Disable cache for development
+    next: { revalidate: 60 }, // Revalidate every 60 seconds
   })
 
   if (!response.ok) {
