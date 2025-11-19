@@ -32,10 +32,10 @@
 /* Animated glow for logo */
 @keyframes logo-glow {
   0%, 100% {
-    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.25));
   }
   50% {
-    filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.8));
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.4));
   }
 }
 

@@ -138,7 +138,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               <button
                 onClick={handleAddToCart}
                 disabled={!product.inStock}
-                className="relative p-2.5 text-gray-300 rounded-lg hover:bg-primary-800 disabled:text-gray-500 disabled:cursor-not-allowed transition-all duration-300"
+                className="relative p-2.5 text-gray-300 rounded-lg hover:bg-primary-700 disabled:text-gray-500 disabled:cursor-not-allowed transition-all duration-300"
                 title="Add to cart"
               >
                 <ShoppingCart className="w-5 h-5" />

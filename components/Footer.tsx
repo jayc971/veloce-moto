@@ -1,15 +1,34 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Facebook, Mail, MapPin } from 'lucide-react'
 import { FaWhatsapp } from 'react-icons/fa'
+import { getAllCategories } from '@/lib/strapi/api'
+import type { Category } from '@/types'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
+  const [categories, setCategories] = useState<Category[]>([])
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const categoriesData = await getAllCategories()
+        setCategories(categoriesData.slice(0, 3))
+      } catch (error) {
+        console.error('Error fetching categories:', error)
+      }
+    }
+
+    fetchCategories()
+  }, [])
 
   return (
     <footer className="animated-gradient-bg text-gray-300">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* About Section */}
           <div>
             <div className="mb-4">
@@ -32,6 +51,25 @@ export default function Footer() {
                 <Facebook className="w-5 h-5" />
               </a>
             </div>
+          </div>
+
+          {/* Categories */}
+          <div>
+            <h3 className="text-white font-bold mb-4">Categories</h3>
+            <ul className="space-y-2 text-sm">
+              {categories.map((category) => (
+                <li key={category.id}>
+                  <Link href={`/category/${category.slug}`} className="hover:text-accent-500 transition">
+                    {category.name}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link href="/products" className="hover:text-accent-500 transition font-medium">
+                  Explore More
+                </Link>
+              </li>
+            </ul>
           </div>
 
           {/* Quick Links */}
