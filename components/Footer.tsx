@@ -44,23 +44,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/deals" className="hover:text-accent-500 transition">
-                  Special Deals
-                </Link>
-              </li>
-              <li>
-                <Link href="/brands" className="hover:text-accent-500 transition">
-                  Brands
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="hover:text-accent-500 transition">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="hover:text-accent-500 transition">
-                  Blog
+                <Link href="/cart" className="hover:text-accent-500 transition">
+                  Shopping Cart
                 </Link>
               </li>
             </ul>
@@ -71,29 +56,22 @@ export default function Footer() {
             <h3 className="text-white font-bold mb-4">Customer Service</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/contact" className="hover:text-accent-500 transition">
-                  Contact Us
-                </Link>
+                <a
+                  href="https://wa.me/94741813772"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-accent-500 transition"
+                >
+                  Contact via WhatsApp
+                </a>
               </li>
               <li>
-                <Link href="/shipping" className="hover:text-accent-500 transition">
-                  Shipping Information
-                </Link>
-              </li>
-              <li>
-                <Link href="/returns" className="hover:text-accent-500 transition">
-                  Returns & Exchanges
-                </Link>
-              </li>
-              <li>
-                <Link href="/warranty" className="hover:text-accent-500 transition">
-                  Warranty
-                </Link>
-              </li>
-              <li>
-                <Link href="/faq" className="hover:text-accent-500 transition">
-                  FAQ
-                </Link>
+                <a
+                  href="mailto:yamahamotohubsl@gmail.com"
+                  className="hover:text-accent-500 transition"
+                >
+                  Email Support
+                </a>
               </li>
             </ul>
           </div>
@@ -126,17 +104,6 @@ export default function Footer() {
         <div className="border-t border-gray-800 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
             <p>&copy; {currentYear} Veloce Moto. All rights reserved.</p>
-            <div className="flex gap-6">
-              <Link href="/privacy" className="hover:text-accent-500 transition">
-                Privacy Policy
-              </Link>
-              <Link href="/terms" className="hover:text-accent-500 transition">
-                Terms of Service
-              </Link>
-              <Link href="/sitemap" className="hover:text-accent-500 transition">
-                Sitemap
-              </Link>
-            </div>
           </div>
         </div>
       </div>
