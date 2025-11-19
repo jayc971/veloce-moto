@@ -32,7 +32,7 @@ export default async function HomePage() {
                   href="/products"
                   className="px-8 py-4 bg-accent-500 hover:bg-accent-600 text-white font-bold rounded-lg transition flex items-center justify-center gap-2"
                 >
-                  Shop Now <ArrowRight className="w-5 h-5" />
+                  Explore More <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
             </div>

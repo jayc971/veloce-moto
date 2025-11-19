@@ -35,7 +35,7 @@ export default function CartPage() {
               className="inline-flex items-center gap-2 px-8 py-4 bg-accent-600 hover:bg-accent-700 text-white font-bold rounded-lg transition"
             >
               <ArrowLeft className="w-5 h-5" />
-              Continue Shopping
+              Explore More
             </Link>
           </div>
         </div>
@@ -189,7 +189,7 @@ export default function CartPage() {
                 href="/products"
                 className="block text-center text-accent-500 hover:text-accent-400 font-semibold"
               >
-                Continue Shopping
+                Explore More
               </Link>
 
               {/* Trust Badges */}
