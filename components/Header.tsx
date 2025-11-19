@@ -174,7 +174,7 @@ export default function Header() {
               <FaWhatsapp className="w-6 h-6" />
             </a>
             <Link
-              href="/products"
+              href="/products?focus=search"
               className="p-2 hover:bg-primary-800 rounded-lg transition text-gray-300"
             >
               <Search className="w-6 h-6" />

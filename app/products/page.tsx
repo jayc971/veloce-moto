@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { useSearchParams } from 'next/navigation'
 import ProductCard from '@/components/ProductCard'
 import { getAllProducts, getAllCategories } from '@/lib/strapi/api'
 import { Filter, Search } from 'lucide-react'
@@ -14,6 +15,15 @@ export default function ProductsPage() {
   const [showFilters, setShowFilters] = useState(false)
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
+  const searchInputRef = useRef<HTMLInputElement>(null)
+  const searchParams = useSearchParams()
+
+  // Auto-focus search bar when coming from navbar search icon
+  useEffect(() => {
+    if (searchParams.get('focus') === 'search' && searchInputRef.current) {
+      searchInputRef.current.focus()
+    }
+  }, [searchParams])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -155,7 +165,7 @@ export default function ProductsPage() {
                       id="sort"
                       value={sortBy}
                       onChange={(e) => setSortBy(e.target.value)}
-                      className="pl-4 py-2 bg-primary-800 border border-primary-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 custom-select"
+                      className="w-44 pl-4 py-2 bg-primary-800 border border-primary-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 custom-select"
                     >
                       <option value="featured">Featured</option>
                       <option value="name">Name</option>
@@ -168,11 +178,12 @@ export default function ProductsPage() {
                   <div className="relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
+                      ref={searchInputRef}
                       type="text"
                       placeholder="Search"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 pr-4 py-2 bg-primary-800 border border-primary-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 placeholder-gray-400 w-40 sm:w-48"
+                      className="w-44 pl-10 pr-4 py-2 bg-primary-800 border border-primary-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 placeholder-gray-400"
                     />
                   </div>
                 </div>
