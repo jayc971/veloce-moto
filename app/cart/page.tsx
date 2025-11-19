@@ -65,9 +65,9 @@ export default function CartPage() {
                   key={item.product.id}
                   className="bg-primary-800 rounded-lg shadow-md overflow-hidden"
                 >
-                  <div className="flex flex-col sm:flex-row gap-4 p-4">
+                  <div className="flex flex-row gap-4 p-4">
                     {/* Product Image */}
-                    <div className="relative w-full sm:w-32 aspect-square bg-primary-800 rounded-lg overflow-hidden flex-shrink-0">
+                    <div className="relative w-20 sm:w-24 h-20 sm:h-24 bg-primary-800 rounded-lg overflow-hidden flex-shrink-0">
                       {item.product.images?.[0] ? (
                         <Image
                           src={item.product.images[0].url}
@@ -111,36 +111,36 @@ export default function CartPage() {
                         </button>
                       </div>
 
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-4">
+                      <div className="flex flex-row items-center justify-between gap-2 mt-2">
                         {/* Quantity */}
                         <div className="flex items-center border border-primary-700 rounded-lg w-fit bg-primary-800">
                           <button
                             onClick={() =>
                               updateQuantity(item.product.id, item.quantity - 1)
                             }
-                            className="p-2 hover:bg-primary-700 transition text-white"
+                            className="p-1.5 sm:p-2 hover:bg-primary-700 transition text-white"
                           >
-                            <Minus className="w-4 h-4" />
+                            <Minus className="w-3 h-3 sm:w-4 sm:h-4" />
                           </button>
-                          <span className="px-4 py-2 font-semibold min-w-[3rem] text-center text-white">
+                          <span className="px-2 sm:px-4 py-1.5 sm:py-2 font-semibold min-w-[2rem] sm:min-w-[3rem] text-center text-white text-sm sm:text-base">
                             {item.quantity}
                           </span>
                           <button
                             onClick={() =>
                               updateQuantity(item.product.id, item.quantity + 1)
                             }
-                            className="p-2 hover:bg-primary-700 transition text-white"
+                            className="p-1.5 sm:p-2 hover:bg-primary-700 transition text-white"
                           >
-                            <Plus className="w-4 h-4" />
+                            <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
                           </button>
                         </div>
 
                         {/* Price */}
                         <div className="text-right">
-                          <div className="font-bold text-lg text-white">
+                          <div className="font-bold text-sm sm:text-lg text-white">
                             {formatPriceSimple(displayPrice * item.quantity)}
                           </div>
-                          <div className="text-sm text-gray-400">
+                          <div className="text-xs sm:text-sm text-gray-400">
                             {formatPriceSimple(displayPrice)} each
                           </div>
                         </div>
