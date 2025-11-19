@@ -308,18 +308,6 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                 </button>
               </div>
 
-              {/* Features */}
-              <div className="grid grid-cols-2 gap-4 mb-8 p-4 bg-primary-800 rounded-lg">
-                <div className="flex items-center gap-2">
-                  <Truck className="w-5 h-5 text-accent-500" />
-                  <span className="text-sm text-gray-300">Island-wide delivery</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-accent-500" />
-                  <span className="text-sm text-gray-300">Genuine parts</span>
-                </div>
-              </div>
-
               {/* Specifications */}
               {product.specifications && product.specifications.length > 0 && (
                 <div>
