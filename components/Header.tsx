@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { ShoppingCart, Menu, X, ChevronDown } from 'lucide-react'
+import { ShoppingCart, Menu, X, ChevronDown, Search } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { useCartStore } from '@/lib/store/cartStore'
 import { getAllCategories } from '@/lib/strapi/api'
@@ -16,7 +16,7 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const itemCount = useCartStore((state) => state.getItemCount())
 
-  const MAX_VISIBLE_CATEGORIES = 6
+  const MAX_VISIBLE_CATEGORIES = 5
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -120,8 +120,14 @@ export default function Header() {
             )}
           </nav>
 
-          {/* Cart & Mobile Menu */}
+          {/* Search, Cart & Mobile Menu */}
           <div className="flex items-center gap-4 flex-shrink-0 ml-auto lg:ml-0">
+            <Link
+              href="/products"
+              className="p-2 hover:bg-primary-800 rounded-lg transition text-gray-300"
+            >
+              <Search className="w-6 h-6" />
+            </Link>
             <Link
               href="/cart"
               className="relative p-2 hover:bg-primary-800 rounded-lg transition text-gray-300"

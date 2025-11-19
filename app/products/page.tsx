@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import ProductCard from '@/components/ProductCard'
 import { getAllProducts, getAllCategories } from '@/lib/strapi/api'
-import { Filter } from 'lucide-react'
+import { Filter, Search } from 'lucide-react'
 import type { Product, Category } from '@/types'
 
 export default function ProductsPage() {
@@ -13,6 +13,7 @@ export default function ProductsPage() {
   const [sortBy, setSortBy] = useState('featured')
   const [showFilters, setShowFilters] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,8 +36,20 @@ export default function ProductsPage() {
   }, [])
 
   const filteredProducts = products.filter((product) => {
-    if (!selectedCategory) return true
-    return product.category.id === selectedCategory
+    // Filter by category
+    if (selectedCategory && product.category.id !== selectedCategory) {
+      return false
+    }
+    // Filter by search query
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase()
+      return (
+        product.name.toLowerCase().includes(query) ||
+        product.brand.toLowerCase().includes(query) ||
+        product.shortDescription?.toLowerCase().includes(query)
+      )
+    }
+    return true
   })
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
@@ -133,22 +146,35 @@ export default function ProductsPage() {
                 <p className="text-gray-300">
                   Showing {sortedProducts.length} products
                 </p>
-                <div className="flex items-center gap-2">
-                  <label htmlFor="sort" className="text-sm text-gray-300">
-                    Sort by:
-                  </label>
-                  <select
-                    id="sort"
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="pl-4 py-2 bg-primary-800 border border-primary-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 custom-select"
-                  >
-                    <option value="featured">Featured</option>
-                    <option value="name">Name</option>
-                    <option value="price-low">Price: Low to High</option>
-                    <option value="price-high">Price: High to Low</option>
-                    <option value="rating">Highest Rated</option>
-                  </select>
+                <div className="flex items-center gap-4">
+                  {/* Search Bar */}
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      type="text"
+                      placeholder="Search"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="pl-10 pr-4 py-2 bg-primary-800 border border-primary-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 placeholder-gray-400 w-40 sm:w-48"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <label htmlFor="sort" className="text-sm text-gray-300">
+                      Sort by:
+                    </label>
+                    <select
+                      id="sort"
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      className="pl-4 py-2 bg-primary-800 border border-primary-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 custom-select"
+                    >
+                      <option value="featured">Featured</option>
+                      <option value="name">Name</option>
+                      <option value="price-low">Price: Low to High</option>
+                      <option value="price-high">Price: High to Low</option>
+                      <option value="rating">Highest Rated</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
