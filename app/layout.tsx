@@ -37,13 +37,6 @@ export const metadata: Metadata = {
     ],
     shortcut: '/favicon.ico',
     apple: '/apple-touch-icon.png',
-    other: [
-      {
-        rel: 'mask-icon',
-        url: '/safari-pinned-tab.svg',
-        color: '#ef4444',
-      },
-    ],
   },
   manifest: '/site.webmanifest',
   openGraph: {
