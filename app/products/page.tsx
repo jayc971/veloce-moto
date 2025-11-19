@@ -156,8 +156,9 @@ function ProductsContent() {
                 <p className="text-gray-300">
                   Showing {sortedProducts.length} products
                 </p>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2">
+                <div className="flex items-center gap-4 w-full sm:w-auto">
+                  {/* Sort By - Hidden on mobile */}
+                  <div className="hidden sm:flex items-center gap-2">
                     <label htmlFor="sort" className="text-sm text-gray-300">
                       Sort by:
                     </label>
@@ -175,7 +176,7 @@ function ProductsContent() {
                     </select>
                   </div>
                   {/* Search Bar */}
-                  <div className="relative">
+                  <div className="relative flex-1 sm:flex-none">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                     <input
                       ref={searchInputRef}
@@ -183,7 +184,7 @@ function ProductsContent() {
                       placeholder="Search"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-44 pl-10 pr-4 py-2 bg-primary-800 border border-primary-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 placeholder-gray-400"
+                      className="w-full sm:w-44 pl-10 pr-4 py-2 bg-primary-800 border border-primary-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-500 placeholder-gray-400"
                     />
                   </div>
                 </div>
