@@ -74,7 +74,7 @@ export default function Header() {
           </Link>
 
           {/* Navigation - Desktop (Centered) */}
-          <nav className="hidden lg:flex items-center justify-center gap-6 flex-1">
+          <nav className="hidden lg:flex items-center justify-between flex-1">
             <Link
               href="/products"
               className="text-gray-300 hover:text-accent-500 font-medium transition whitespace-nowrap"
@@ -123,7 +123,7 @@ export default function Header() {
           </nav>
 
           {/* All Products & More - Tablet Only */}
-          <div className="hidden md:flex lg:hidden items-center gap-6">
+          <div className="hidden md:flex lg:hidden items-center justify-evenly flex-1">
             <Link
               href="/products"
               className="text-gray-300 hover:text-accent-500 font-medium transition whitespace-nowrap"
