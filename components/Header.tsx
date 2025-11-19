@@ -12,6 +12,7 @@ import logo from '@/app/assets/logo.png'
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [moreDropdownOpen, setMoreDropdownOpen] = useState(false)
+  const [tabletMoreDropdownOpen, setTabletMoreDropdownOpen] = useState(false)
   const [categories, setCategories] = useState<Category[]>([])
   const [isScrolled, setIsScrolled] = useState(false)
   const itemCount = useCartStore((state) => state.getItemCount())
@@ -120,16 +121,48 @@ export default function Header() {
             )}
           </nav>
 
-          {/* All Products - Tablet Only */}
-          <Link
-            href="/products"
-            className="hidden md:block lg:hidden text-gray-300 hover:text-accent-500 font-medium transition whitespace-nowrap ml-auto"
-          >
-            All Products
-          </Link>
+          {/* All Products & More - Tablet Only */}
+          <div className="hidden md:flex lg:hidden items-center gap-6">
+            <Link
+              href="/products"
+              className="text-gray-300 hover:text-accent-500 font-medium transition whitespace-nowrap"
+            >
+              All Products
+            </Link>
+            {categories.length > 0 && (
+              <div
+                className="relative"
+                onMouseEnter={() => setTabletMoreDropdownOpen(true)}
+                onMouseLeave={() => setTabletMoreDropdownOpen(false)}
+              >
+                <button
+                  className="flex items-center gap-1 text-gray-300 hover:text-accent-500 font-medium transition whitespace-nowrap"
+                >
+                  More
+                  <ChevronDown className={`w-4 h-4 transition-transform ${tabletMoreDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {tabletMoreDropdownOpen && (
+                  <div className="absolute top-full right-0 pt-2 z-50">
+                    <div className="w-56 bg-primary-800 rounded-lg shadow-xl border border-primary-700 py-2">
+                      {categories.map((category) => (
+                        <Link
+                          key={category.id}
+                          href={`/category/${category.slug}`}
+                          className="block px-4 py-2 text-gray-300 hover:bg-black hover:text-accent-500 transition"
+                          onClick={() => setTabletMoreDropdownOpen(false)}
+                        >
+                          {category.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
 
           {/* Search, Cart & Mobile Menu */}
-          <div className="flex items-center gap-4 flex-shrink-0 ml-auto md:ml-0">
+          <div className="flex items-center gap-4 flex-shrink-0 ml-auto">
             <Link
               href="/products"
               className="p-2 hover:bg-primary-800 rounded-lg transition text-gray-300"

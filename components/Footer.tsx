@@ -30,9 +30,9 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* About Section */}
-          <div>
+          <div className="text-center md:text-left">
             <div className="mb-4">
-              <div className="flex items-end gap-1">
+              <div className="flex items-end gap-1 md:justify-start justify-center">
                 <span className="veloce-text text-accent-500 text-2xl">VELOCE</span>
                 <span className="moto-text text-white text-2xl translate-y-2">MOTO</span>
               </div>
@@ -41,7 +41,7 @@ export default function Footer() {
               Your trusted source for premium motorcycle parts and accessories.
               Quality products, expert support, and fast shipping.
             </p>
-            <div className="flex gap-4">
+            <div className="flex gap-4 justify-center md:justify-start">
               <a
                 href="https://www.facebook.com/Velocemoto2001"
                 target="_blank"
@@ -54,7 +54,7 @@ export default function Footer() {
           </div>
 
           {/* Categories */}
-          <div>
+          <div className="text-center md:text-left">
             <h3 className="text-white font-bold mb-4">Categories</h3>
             <ul className="space-y-2 text-sm">
               {categories.map((category) => (
@@ -73,7 +73,7 @@ export default function Footer() {
           </div>
 
           {/* Quick Links */}
-          <div>
+          <div className="text-center md:text-left">
             <h3 className="text-white font-bold mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li>
@@ -90,7 +90,7 @@ export default function Footer() {
           </div>
 
           {/* Customer Service */}
-          <div>
+          <div className="text-center md:text-left">
             <h3 className="text-white font-bold mb-4">Customer Service</h3>
             <ul className="space-y-2 text-sm">
               <li>
@@ -115,20 +115,20 @@ export default function Footer() {
           </div>
 
           {/* Contact Info */}
-          <div>
+          <div className="text-center md:text-left">
             <h3 className="text-white font-bold mb-4">Contact Us</h3>
             <ul className="space-y-3 text-sm">
-              <li className="flex items-start gap-2">
+              <li className="flex items-start gap-2 justify-center md:justify-start">
                 <MapPin className="w-5 h-5 mt-0.5 flex-shrink-0" />
                 <span>Veloce Moto<br />Galle Road, Aluthgama</span>
               </li>
-              <li className="flex items-center gap-2">
+              <li className="flex items-center gap-2 justify-center md:justify-start">
                 <FaWhatsapp className="w-5 h-5 flex-shrink-0" />
                 <a href="https://wa.me/94741813772" target="_blank" rel="noopener noreferrer" className="hover:text-accent-500 transition">
                   (+94) 74 181 3772
                 </a>
               </li>
-              <li className="flex items-center gap-2">
+              <li className="flex items-center gap-2 justify-center md:justify-start">
                 <Mail className="w-5 h-5 flex-shrink-0" />
                 <a href="mailto:yamahamotohubsl@gmail.com" className="hover:text-accent-500 transition">
                   yamahamotohubsl@gmail.com
