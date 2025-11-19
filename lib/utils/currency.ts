@@ -14,7 +14,7 @@ export function formatPrice(price: number, currency: string = 'LKR'): string {
 
 export function formatPriceSimple(price: number): string {
   return `Rs. ${price.toLocaleString('en-LK', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   })}`
 }

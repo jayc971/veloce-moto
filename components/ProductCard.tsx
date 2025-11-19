@@ -54,12 +54,12 @@ export default function ProductCard({ product }: ProductCardProps) {
           {/* Badges */}
           <div className="absolute top-2 left-2 flex flex-col gap-2 z-10">
             {product.isNew && (
-              <span className="px-2 py-1 bg-primary-900 text-white text-xs font-bold rounded">
+              <span className="px-2 py-1 bg-primary-900 text-white text-xs font-bold rounded text-center">
                 NEW
               </span>
             )}
             {product.isBestSeller && (
-              <span className="px-2 py-1 bg-accent-600 text-white text-xs font-bold rounded">
+              <span className="px-2 py-1 bg-accent-600 text-white text-xs font-bold rounded text-center">
                 BEST SELLER
               </span>
             )}
@@ -110,7 +110,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           )}
 
           {/* Short Description */}
-          <p className="text-sm text-gray-300 mb-3 line-clamp-2 relative z-10 flex-1">
+          <p className="text-sm text-gray-300 mb-2 line-clamp-2 relative z-10 flex-1">
             {product.shortDescription}
           </p>
 
@@ -122,13 +122,13 @@ export default function ProductCard({ product }: ProductCardProps) {
                   {formatPriceSimple(displayPrice)}
                 </span>
                 {hasDiscount && (
-                  <span className="text-base text-gray-400 line-through mt-1">
+                  <span className="text-sm text-gray-400 line-through">
                     {formatPriceSimple(product.price)}
                   </span>
                 )}
               </div>
               {hasDiscount && (
-                <span className="text-xs text-accent-500 font-bold mt-1 block">
+                <span className="text-xs text-accent-500 font-bold block">
                   Save {formatPriceSimple(product.price - product.salePrice!)}
                 </span>
               )}
@@ -138,7 +138,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               <button
                 onClick={handleAddToCart}
                 disabled={!product.inStock}
-                className="relative p-2.5 text-gray-300 rounded-lg hover:bg-primary-800 hover:text-accent-500 disabled:text-gray-500 disabled:cursor-not-allowed transition-all duration-300"
+                className="relative p-2.5 text-gray-300 rounded-lg hover:bg-primary-800 disabled:text-gray-500 disabled:cursor-not-allowed transition-all duration-300"
                 title="Add to cart"
               >
                 <ShoppingCart className="w-5 h-5" />
