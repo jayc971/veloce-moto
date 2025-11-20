@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const motorcycleImages = [
   {
-    url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80',
+    url: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&q=80',
     alt: 'Black Racing Motorcycle'
   },
   {
@@ -14,15 +14,15 @@ const motorcycleImages = [
     alt: 'Red Sport Racing Bike'
   },
   {
-    url: 'https://images.unsplash.com/photo-1558618666-1ac11a0d0b8f?w=800&q=80',
+    url: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&q=80',
     alt: 'Blue Racing Motorcycle'
   },
   {
-    url: 'https://images.unsplash.com/photo-1599819177818-f9e8e3a08c1c?w=800&q=80',
+    url: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&q=80',
     alt: 'Yellow Racing Motorcycle'
   },
   {
-    url: 'https://images.unsplash.com/photo-1591541773779-0b8c0f948d97?w=800&q=80',
+    url: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=800&q=80',
     alt: 'Green Racing Superbike'
   }
 ]
