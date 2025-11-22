@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Facebook, Mail, MapPin } from 'lucide-react'
-import { FaWhatsapp } from 'react-icons/fa'
+import { FaWhatsapp, FaInstagram, FaTiktok } from 'react-icons/fa'
 import { getAllCategories } from '@/lib/strapi/api'
 import type { Category } from '@/types'
 
@@ -49,6 +49,22 @@ export default function Footer() {
                 className="hover:text-accent-500 transition"
               >
                 <Facebook className="w-5 h-5" />
+              </a>
+              <a
+                href="https://instagram.com/velocemoto2001"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-accent-500 transition"
+              >
+                <FaInstagram className="w-5 h-5" />
+              </a>
+              <a
+                href="https://tiktok.com/@velocemoto2001"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-accent-500 transition"
+              >
+                <FaTiktok className="w-5 h-5" />
               </a>
             </div>
           </div>
